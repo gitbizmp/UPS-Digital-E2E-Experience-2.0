@@ -1,0 +1,13 @@
+<svg width="400" height="200" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hrBg" x1="0" y1="0" x2="400" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6D5AE6" />
+      <stop offset="1" stop-color="#3B2F9E" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#hrBg)" />
+  <g transform="translate(200 100)" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-38 8a38 38 0 1 0 12 -28" />
+    <path d="M-38 -22v22h22" />
+  </g>
+</svg>

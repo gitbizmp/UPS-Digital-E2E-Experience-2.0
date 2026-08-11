@@ -1,0 +1,13 @@
+<svg width="400" height="200" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shopifyBg" x1="0" y1="0" x2="400" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#95BF47" />
+      <stop offset="1" stop-color="#4C7A2E" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#shopifyBg)" />
+  <g transform="translate(200 100)">
+    <path d="M-40 -22h80a9 9 0 0 1 9 8l5 60a15 15 0 0 1-15 16h-78a15 15 0 0 1-15-16l5-60a9 9 0 0 1 9-8z" fill="#ffffff" opacity="0.96" />
+    <path d="M-22 -18v-6a22 22 0 0 1 44 0v6" fill="none" stroke="#4C7A2E" stroke-width="9" stroke-linecap="round" />
+  </g>
+</svg>

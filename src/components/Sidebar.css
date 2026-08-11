@@ -1,0 +1,256 @@
+.sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  padding-right: 16px;
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar__inner {
+  flex: 1;
+  background: #f3f8ff;
+  padding: 8px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar__menu {
+  color: var(--text-gray-500);
+  flex-shrink: 0;
+}
+
+.sidebar__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin: -6px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.sidebar__menu-btn:hover {
+  background: var(--blue-150);
+}
+
+.sidebar__menu--ghost {
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
+
+.sidebar__logo {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar__brand-divider {
+  color: var(--outline);
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 1;
+}
+.sidebar__brand-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.sidebar__middle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 0 20px;
+}
+
+.sidebar__section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar__section-title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+  color: #6e84a3;
+  padding: 4px 10px 2px;
+}
+
+.sidebar__section-note {
+  margin: 0;
+  padding: 4px 10px 2px;
+  font-size: 12px;
+  color: var(--text-grayed);
+}
+
+/* Menu link */
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 8px 20px 20px 8px;
+  color: #6e84a3;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.15px;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.menu-link:hover {
+  background: #f3f5f9;
+}
+
+.menu-link--active {
+  background: #d1e4ff;
+  color: #004cbf;
+  font-weight: 600;
+}
+
+.menu-link__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.menu-link__label {
+  flex: 1;
+}
+
+.sidebar__bottom {
+  padding-top: 10px;
+}
+
+.menu-link--help {
+  justify-content: space-between;
+}
+
+/* --------------------------- Insurance submenu --------------------------------- */
+.menu-link__chevron {
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.menu-link__chevron--open {
+  transform: rotate(180deg);
+}
+
+.sidebar__submenu {
+  display: flex;
+  flex-direction: column;
+  margin: 2px 0 2px 34px;
+  padding-left: 12px;
+  border-left: 1px solid var(--blue-150);
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px 18px 18px 8px;
+  padding: 10px;
+  text-align: left;
+  color: #6e84a3;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.15px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.submenu-link__label {
+  flex: 1;
+}
+
+.submenu-link__badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #2c7be5;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.submenu-link:hover {
+  background: #f3f5f9;
+}
+
+.submenu-link--active {
+  background: #d1e4ff;
+  color: #004cbf;
+  font-weight: 500;
+}
+
+/* --------------------------- Collapsed (icon-only) ----------------------------- */
+.sidebar--collapsed {
+  width: 72px;
+  padding-right: 0;
+}
+
+.sidebar--collapsed .sidebar__inner {
+  padding: 24px 12px;
+  align-items: stretch;
+}
+
+.sidebar--collapsed .sidebar__top {
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar__brand,
+.sidebar--collapsed .sidebar__menu--ghost,
+.sidebar--collapsed .sidebar__section-title,
+.sidebar--collapsed .menu-link__label,
+.sidebar--collapsed .menu-link__chevron,
+.sidebar--collapsed .menu-link--help > svg,
+.sidebar--collapsed .sidebar__submenu {
+  display: none;
+}
+
+.sidebar--collapsed .menu-link {
+  justify-content: center;
+  gap: 0;
+  padding: 10px 0;
+}
+
+.sidebar--collapsed .menu-link--help {
+  justify-content: center;
+}
+

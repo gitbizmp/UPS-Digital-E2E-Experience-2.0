@@ -1,0 +1,91 @@
+/* ============================================================
+   Consumer Portal — Design tokens (from Figma variables)
+   Fonts: Cerebri Sans (body) / Nunito Sans (display) — fall
+   back to close geometric sans-serifs available on the web.
+   ============================================================ */
+
+:root {
+  /* Surfaces */
+  --page-surface: #f8faff;
+  --container-white: #ffffff;
+  --container-blue: #eaf1ff;
+  --surface-container-low: #f2f3fa;
+  --surface-container: #f2f1ef;
+
+  /* Text */
+  --text-primary: #353b49;
+  --text-gray-500: #273e58;
+  --text-gray-400: #5d6e81;
+  --text-gray-350: #6a7889;
+  --text-grayed: #7a89ac;
+  --text-white: #ffffff;
+  --ups-black: #121212;
+  --ups-gray-1: #5f5753;
+
+  /* Brand / accent */
+  --blue-600: #004cbf;
+  --blue-200: #bfd8ff;
+  --blue-150: #d4e5ff;
+  --blue-100: #e9f2ff;
+  --ups-blue: #0662bb;
+  --ups-gold: #fcc400;
+  --success-green: #21872b;
+  --success-green-dark: #2cb55c;
+  --teal: #0a8080;
+  --data-green: #7c9d62;
+  --warning-orange: #e86825;
+  --badge-green: #bfebd5;
+  --success-teal: #00a29a;
+  --error-red: #df2901;
+  --gold-500: #e8a400;
+
+  /* Lines / outlines */
+  --outline: #cad5ed;
+  --border-soft: #e9f2ff;
+  --gray-100: #edeef1;
+  --chart-grid: #dfe5ee;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+
+  /* Shadow */
+  --card-shadow: 0 4px 12px -3px #0000000d, 0 2px 5px 0 #00000024;
+
+  /* Fonts */
+  --font-body: "Cerebri Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Nunito Sans", "Cerebri Sans", "Inter", system-ui, sans-serif;
+
+  color-scheme: light;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--page-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}

@@ -1,0 +1,900 @@
+/* Orders-specific overrides layered on top of Claims.css */
+
+.orders .claims-row {
+  grid-template-columns: 10px 32px minmax(84px, 0.8fr) minmax(78px, 0.8fr) minmax(78px, 0.8fr) minmax(0, 2fr) minmax(56px, 0.5fr) minmax(100px, 0.9fr) 32px;
+  min-width: max-content;
+}
+
+/* Risk Intelligence inactive: no coverage badge column, no score column */
+.orders .claims-table--no-risk .claims-row {
+  grid-template-columns: 10px minmax(84px, 0.8fr) minmax(78px, 0.8fr) minmax(78px, 0.8fr) minmax(0, 2fr) minmax(100px, 0.9fr) 32px;
+}
+
+.orders .claim-detail {
+  width: 400px;
+}
+
+.orders-cell--link {
+  color: var(--ups-blue);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orders-shield--muted {
+  color: var(--text-grayed);
+  opacity: 0.7;
+}
+
+/* Status badges */
+.status-badge--complete {
+  background: var(--success-teal);
+}
+
+.status-badge--rejected {
+  background: #8a97ad;
+}
+
+/* Order reference pill */
+/* Items */
+.orders-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.orders-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.orders-item__thumb {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.orders-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.orders-item__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.orders-item__meta {
+  font-size: 12px;
+  color: var(--text-gray-400);
+}
+
+.orders-item__price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Risk tab */
+.orders-risk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.orders-risk__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.orders-risk__badge--low {
+  background: var(--success-teal);
+}
+
+.orders-risk__badge--medium {
+  background: var(--gold-500);
+}
+
+.orders-risk__badge--high {
+  background: var(--error-red);
+}
+
+.orders-risk__score {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* --------------------------- Row actions dropdown menu ------------------------- */
+.orders-menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.orders-menu {
+  position: fixed;
+  z-index: 1000;
+  width: 188px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: var(--container-white);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.orders-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-gray-400);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.orders-menu__item:hover {
+  background: var(--surface-container-low);
+}
+
+.orders-menu__item svg {
+  flex-shrink: 0;
+  color: var(--text-gray-400);
+}
+
+/* -------------------------------- File A Claim drawer ------------------------- */
+.faclaim {
+  flex-shrink: 0;
+  margin-left: 24px;
+  width: 420px;
+  max-width: calc(100vw - 48px);
+  display: flex;
+  flex-direction: column;
+  background: var(--container-white);
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: faclaim-slide 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes faclaim-slide {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.faclaim__head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 16px 12px 24px;
+}
+
+.faclaim__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.faclaim__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.faclaim__subtitle {
+  margin: 2px 0 0;
+  font-size: 15px;
+  color: var(--text-gray-400);
+}
+
+.faclaim__close {
+  flex-shrink: 0;
+}
+
+.faclaim__progress {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  padding: 4px 24px 8px;
+}
+
+.faclaim__bar {
+  flex: 1;
+  height: 12px;
+  border-radius: 32px;
+  background: var(--gray-100);
+}
+
+.faclaim__bar.is-active {
+  background: var(--ups-blue);
+}
+
+.faclaim__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.faclaim__step-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.faclaim__reasons {
+  display: flex;
+  gap: 16px;
+}
+
+.faclaim__reason {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+  background: var(--container-white);
+  color: var(--text-grayed);
+  font-family: var(--font-body);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
+}
+
+.faclaim__reason svg {
+  color: currentColor;
+}
+
+.faclaim__reason:hover {
+  border-color: var(--ups-blue);
+}
+
+.faclaim__reason.is-selected {
+  background: #f8faff;
+  border-color: var(--ups-blue);
+  color: var(--ups-blue);
+}
+
+/* --- step 2: payment recipients --- */
+.faclaim__recipients,
+.faclaim__methods,
+.faclaim__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faclaim__methods {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.faclaim__recipient {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+  background: var(--container-white);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease;
+}
+
+.faclaim__recipient:hover {
+  border-color: var(--ups-blue);
+}
+
+.faclaim__recipient.is-selected {
+  background: #f8faff;
+  border-color: var(--ups-blue);
+}
+
+.faclaim__recipient-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--outline);
+  border-radius: 6px;
+  color: #fff;
+}
+
+.faclaim__recipient.is-selected .faclaim__recipient-check {
+  background: var(--ups-blue);
+  border-color: var(--ups-blue);
+}
+
+.faclaim__recipient-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faclaim__recipient-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.faclaim__badge {
+  padding: 2px 8px;
+  border-radius: 32px;
+  background: var(--gray-100, #edeef1);
+  color: #001a0d;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.faclaim__recipient-line {
+  font-size: 14px;
+  color: var(--text-gray-400);
+}
+
+.faclaim__recipient-del {
+  flex-shrink: 0;
+  color: var(--text-gray-400);
+}
+
+.faclaim__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ups-blue);
+  cursor: pointer;
+}
+
+.faclaim__addrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ups-blue);
+  cursor: pointer;
+}
+
+.faclaim__recipient-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+  background: var(--container-white);
+  overflow: hidden;
+}
+
+.faclaim__recipient--row {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px dashed var(--outline, #cad5ed);
+}
+
+.faclaim__recipient--row:hover {
+  border-color: transparent;
+  border-bottom: 1px dashed var(--outline, #cad5ed);
+  background: #f8faff;
+}
+
+.faclaim__recipient-list .faclaim__addrow {
+  padding: 14px 16px;
+}
+
+/* --- step 3: direct deposit (JPMC) widget --- */
+.faclaim__bankform {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+  background: var(--container-white);
+}
+
+.faclaim__bankform-req {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--error-red, #a7003a);
+}
+
+.faclaim__uline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--outline, #cad5ed);
+  color: var(--text-gray-400);
+}
+
+.faclaim__uline-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.faclaim__uline-input::placeholder {
+  color: var(--text-gray-400);
+}
+
+.faclaim__uline--select .faclaim__uline-input {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+/* --- step 4 / 6: checkbox rows --- */
+.faclaim__checkrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+  background: var(--container-white);
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.faclaim__checkrow.is-checked {
+  background: #f8faff;
+  border-color: var(--ups-blue);
+}
+
+.faclaim__checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--outline);
+  border-radius: 6px;
+  color: #fff;
+}
+
+.faclaim__checkrow.is-checked .faclaim__checkbox {
+  background: var(--ups-blue);
+  border-color: var(--ups-blue);
+}
+
+/* --- step 5: fields --- */
+.faclaim__req {
+  color: var(--error-red, #a7003a);
+}
+
+.faclaim__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.faclaim__label svg {
+  color: var(--text-gray-400);
+}
+
+.faclaim__select {
+  position: relative;
+  display: block;
+}
+
+.faclaim__select select {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  border: 1px solid var(--outline);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--container-white);
+  appearance: none;
+  cursor: pointer;
+}
+
+.faclaim__select select:focus {
+  outline: none;
+  border-color: var(--ups-blue);
+}
+
+.faclaim__select svg {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-gray-400);
+}
+
+/* --- step 6: amount + upload --- */
+.faclaim__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.faclaim__amount-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ups-black, #121212);
+}
+
+.faclaim__amount-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ups-blue);
+}
+
+.faclaim__amount-note {
+  font-size: 14px;
+  color: var(--text-gray-400);
+}
+
+.faclaim__upload-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--blue-100, #e9f2ff);
+  border-radius: 8px;
+}
+
+.faclaim__upload-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.faclaim__upload-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.faclaim__upload-sub {
+  font-size: 13px;
+  color: var(--error-red, #a7003a);
+}
+
+.faclaim__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px;
+  border: 2px dashed #6a7889;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.faclaim__dropicon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gray-100, #edeef1);
+  color: var(--text-gray-400);
+}
+
+.faclaim__droptext {
+  font-size: 14px;
+  color: var(--text-gray-400);
+}
+
+.faclaim__link-inline {
+  color: var(--ups-blue);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.faclaim__uploaded {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faclaim__uploaded-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faclaim__uploaded-empty {
+  font-size: 14px;
+  color: var(--text-gray-400);
+}
+
+/* --- success summary --- */
+.faclaim__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.faclaim__sum-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faclaim__sum-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.faclaim__sum-head svg {
+  color: var(--ups-blue);
+}
+
+.faclaim__sum-head svg [stroke],
+.faclaim__sum-head svg path,
+.faclaim__sum-head svg circle,
+.faclaim__sum-head svg rect,
+.faclaim__sum-head svg line {
+  stroke-width: 2.4;
+}
+
+.faclaim__sum-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.faclaim__sum-badge {
+  padding: 3px 10px;
+  border-radius: 32px;
+  background: var(--gray-100, #edeef1);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faclaim__sum-badge--paid {
+  background: #bfebd5;
+  color: #00351d;
+}
+
+.faclaim__sum-rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faclaim__sum-rows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.faclaim__sum-rows dt {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ups-black, #121212);
+}
+
+.faclaim__sum-rows dd {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-gray-400);
+}
+
+.faclaim__sum-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  color: var(--text-gray-350);
+}
+
+.faclaim__sum-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-gray-400);
+}
+
+.faclaim__sum-files {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ups-blue);
+}
+
+.faclaim__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faclaim__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faclaim__textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--outline);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.faclaim__textarea:focus {
+  outline: none;
+  border-color: var(--ups-blue);
+}
+
+.faclaim__done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 12px;
+}
+
+.faclaim__done-icon {
+  color: var(--success-green);
+}
+
+.faclaim__done-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.faclaim__done-text {
+  margin: 0;
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-gray-400);
+}
+
+.faclaim__foot {
+  flex-shrink: 0;
+  display: flex;
+  gap: 16px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.faclaim__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.14s ease, opacity 0.14s ease;
+}
+
+.faclaim__btn--primary {
+  border: 1px solid var(--ups-blue);
+  background: var(--ups-blue);
+  color: #fff;
+}
+
+.faclaim__btn--primary:hover:not(:disabled) {
+  background: #0552a0;
+}
+
+.faclaim__btn--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.faclaim__btn--ghost {
+  border: 1px solid var(--ups-blue);
+  background: var(--container-white);
+  color: var(--ups-blue);
+}
+
+.faclaim__btn--ghost:hover {
+  background: var(--blue-100, #e9f2ff);
+}

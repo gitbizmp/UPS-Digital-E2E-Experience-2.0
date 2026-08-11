@@ -1,0 +1,296 @@
+/* Insurance Preferences wizard — reuses .side-panel shell from ConnectStorePanel.css */
+
+/* ----------------------------------- Header ------------------------------------ */
+.ins-titles {
+  flex: 1;
+  min-width: 0;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ins-title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+  color: #474747;
+}
+
+.ins-subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+  color: #474747;
+}
+
+/* --------------------------------- Progress bar -------------------------------- */
+.ins-progress {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.ins-progress__seg {
+  flex: 1;
+  height: 12px;
+  border-radius: 32px;
+  background: var(--gray-100, #edeef1);
+  overflow: hidden;
+}
+
+.ins-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: 32px;
+  background: var(--ups-blue);
+  transition: width 0.3s ease;
+}
+
+/* ---------------------------------- Scope step --------------------------------- */
+.ins-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ins-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  background: var(--container-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ins-option--active {
+  border-color: var(--ups-blue);
+  box-shadow: 0 0 0 1px var(--ups-blue);
+}
+
+.ins-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 100px;
+  background: var(--gray-100, #edeef1);
+  color: #fff;
+}
+
+.ins-option--active .ins-radio {
+  background: var(--ups-blue);
+}
+
+.ins-option__icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.ins-option__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ins-option__title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.32px;
+  color: #273e58;
+}
+
+.ins-option__desc {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: var(--text-grayed);
+}
+
+/* --------------------------------- Product table ------------------------------- */
+.ins-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-100, #edeef1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ins-table__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.ins-table__tab {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 12px;
+  font-weight: 500;
+  color: #303030;
+}
+
+.ins-table__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.ins-table__ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  background: #fff;
+  color: #303030;
+  cursor: pointer;
+}
+
+.ins-table__ctrl:hover {
+  background: #f7f7f7;
+}
+
+.ins-table__scroll {
+  overflow-y: auto;
+}
+
+.ins-table__grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+}
+
+.ins-table__grid thead th {
+  position: sticky;
+  top: 0;
+  padding: 8px 6px;
+  text-align: left;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 12px;
+  font-weight: 500;
+  color: #616161;
+}
+
+.ins-table__grid tbody td {
+  padding: 14px 6px;
+  border-bottom: 1px solid #ebebeb;
+  font-size: 13px;
+  line-height: 20px;
+  color: #303030;
+  white-space: nowrap;
+}
+
+.ins-table__check {
+  width: 34px;
+  padding-left: 12px !important;
+  text-align: center;
+}
+
+.ins-table__check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ups-blue);
+  cursor: pointer;
+}
+
+.ins-table__id {
+  font-weight: 500;
+}
+
+.ins-table__desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.ins-table__pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  background: #f7f7f7;
+}
+
+.ins-table__page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: #303030;
+  cursor: pointer;
+}
+
+.ins-table__page:disabled {
+  color: #b5b5b5;
+  cursor: default;
+}
+
+/* ------------------------------------ Summary ---------------------------------- */
+.ins-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ins-summary__label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #273e58;
+}
+
+.ins-summary__scope {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ups-blue);
+}
+
+.ins-summary__note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-grayed);
+}
+
+.ins-summary__list {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ins-summary__list li {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-grayed);
+}
+
+.ins-summary__empty {
+  list-style: none;
+  margin-left: -18px;
+}

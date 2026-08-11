@@ -1,0 +1,254 @@
+.topbar {
+  height: 80px;
+  flex-shrink: 0;
+  background: #f3f8ff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px 0 16px;
+}
+
+.topbar--plain {
+  background: #f5f6f8;
+}
+
+.topbar__left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.topbar__menu-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.topbar__menu {
+  color: var(--text-gray-500);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar__brand-logo {
+  height: 18px;
+  width: auto;
+  object-fit: contain;
+}
+
+.topbar__brand-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-gray-500, #353b49);
+  white-space: nowrap;
+}
+
+.topbar__brand-divider {
+  color: #c3ccdb;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.topbar__brand-page {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar__icon-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--text-gray-500);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.topbar__icon-btn--notify {
+  position: relative;
+}
+
+.topbar__notif-badge {
+  position: absolute;
+  top: 8px;
+  right: 7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #d92d20;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  border: 1px solid var(--page-surface);
+}
+
+.topbar__icon-btn:hover {
+  background: #f3f5f9;
+}
+
+.topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: var(--container-blue);
+  border: 1px solid var(--outline);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.topbar__user:hover {
+  border-color: var(--ups-blue);
+}
+
+.topbar__biz {
+  height: 24px;
+  padding: 0 8px;
+  background: var(--container-white);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-gray-400);
+  white-space: nowrap;
+}
+
+.topbar__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 1000px;
+  background: var(--success-teal);
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* App switcher */
+.app-switcher {
+  position: relative;
+  display: inline-flex;
+}
+.app-switcher__drop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  width: 240px;
+  box-sizing: border-box;
+  padding: 16px;
+  background: #f8faff;
+  border: 1px solid #cad5ed;
+  border-radius: 16px;
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.15), 0 8px 6px rgba(0, 0, 0, 0.15);
+}
+.app-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #353b49;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.app-tile:hover {
+  background: #f3f5f9;
+}
+.app-tile--active {
+  background: #eef2f7;
+}
+.app-tile__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(18, 38, 63, 0.18);
+}
+.app-tile__icon-mark {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+.app-tile__square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.app-tile__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.app-tile__label {
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.15;
+  text-align: center;
+}
