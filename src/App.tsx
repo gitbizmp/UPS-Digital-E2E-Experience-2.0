@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { GoogleHome, GoogleResults } from "./components/Google";
 import UpsDigital from "./components/UpsDigital";
 import Questionnaire from "./components/Questionnaire";
@@ -13,7 +13,7 @@ import "./components/Flow.css";
 export default function App() {
   return (
     <AccessGate>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
         <Route path="/" element={<GoogleHome />} />
         <Route path="/search" element={<GoogleResults />} />
@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
           <Route path="/portal" element={<Portal />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AccessGate>
   );
 }
