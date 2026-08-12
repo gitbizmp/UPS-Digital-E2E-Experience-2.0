@@ -503,20 +503,25 @@ function ProductEducationDrawer({
   product,
   postPurchasePurchased,
   commerceShieldPurchased,
+  insureShieldPurchased,
   onConfigureInLynkUp,
   onConfigureCommerceShieldInLynkUp,
+  onConfigureInsureShieldInLynkUp,
   onClose,
 }: {
   product: Product;
   postPurchasePurchased: boolean;
   commerceShieldPurchased: boolean;
+  insureShieldPurchased: boolean;
   onConfigureInLynkUp: () => void;
   onConfigureCommerceShieldInLynkUp: () => void;
+  onConfigureInsureShieldInLynkUp: () => void;
   onClose: () => void;
 }) {
   const edu = product.education;
   const isPostPurchase = product.id === "post-purchase";
   const isCommerceShield = product.id === "commerceshield";
+  const isInsureShield = product.id === "insureshield-shipping";
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -582,6 +587,68 @@ function ProductEducationDrawer({
                   <li className="prodedu-includes__item"><span className="prodedu-includes__dot" /><span className="prodedu-includes__name">Shipping protection</span></li>
                 </ul>
               </div>
+            </section>
+          ) : isInsureShield ? (
+            <section className="prodedu-section prodedu-overview">
+              <p className="prodedu-overview__lede">
+                Coverage your customers can count on. InsureShield&reg; protects high-value
+                shipments across every carrier, so a lost, damaged, or stolen package never
+                becomes a lost customer.
+              </p>
+
+              <div className="prodedu-valueband">
+                <div className="prodedu-value">
+                  <span className="prodedu-value__icon"><ShieldIcon size={16} /></span>
+                  <div className="prodedu-value__text">
+                    <p className="prodedu-value__title">Protect every shipment</p>
+                    <p className="prodedu-value__body">Coverage across all carriers and modes &mdash; UPS&reg;, FedEx&reg;, DHL&reg;, and USPS&reg;.</p>
+                  </div>
+                </div>
+                <div className="prodedu-value">
+                  <span className="prodedu-value__icon"><TrendingUpIcon size={16} /></span>
+                  <div className="prodedu-value__text">
+                    <p className="prodedu-value__title">Recover revenue faster</p>
+                    <p className="prodedu-value__body">Most approved claims are paid within days, not weeks, so cash flow keeps moving.</p>
+                  </div>
+                </div>
+                <div className="prodedu-value">
+                  <span className="prodedu-value__icon"><CheckCircleIcon size={16} /></span>
+                  <div className="prodedu-value__text">
+                    <p className="prodedu-value__title">Less claim friction</p>
+                    <p className="prodedu-value__body">Auto-flag claims-ready events and file in a few clicks &mdash; no paperwork pileup.</p>
+                  </div>
+                </div>
+                <div className="prodedu-value">
+                  <span className="prodedu-value__icon"><GlobeIcon size={16} /></span>
+                  <div className="prodedu-value__text">
+                    <p className="prodedu-value__title">Coverage tuned to your store</p>
+                    <p className="prodedu-value__body">Set coverage defaults by order type and value to match your risk profile.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prodedu-includes">
+                <p className="prodedu-includes__label">What you can set up</p>
+                <ul className="prodedu-includes__list">
+                  <li className="prodedu-includes__item"><span className="prodedu-includes__dot" /><span className="prodedu-includes__name">Coverage defaults by order type</span></li>
+                  <li className="prodedu-includes__item"><span className="prodedu-includes__dot" /><span className="prodedu-includes__name">Automatic claims-ready flagging</span></li>
+                  <li className="prodedu-includes__item"><span className="prodedu-includes__dot" /><span className="prodedu-includes__name">Payout &amp; outcome tracking</span></li>
+                  <li className="prodedu-includes__item"><span className="prodedu-includes__dot" /><span className="prodedu-includes__name">All-carrier shipment protection</span></li>
+                </ul>
+              </div>
+
+              <figure className="prodedu-quote">
+                <div className="prodedu-quote__stars">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} size={18} />
+                  ))}
+                </div>
+                <blockquote className="prodedu-quote__text">{edu.testimonial.quote}</blockquote>
+                <figcaption className="prodedu-quote__cite">
+                  <span className="prodedu-quote__name">{edu.testimonial.name}</span>
+                  <span className="prodedu-quote__role">{edu.testimonial.role}</span>
+                </figcaption>
+              </figure>
             </section>
           ) : !isPostPurchase ? (
             <>
@@ -670,7 +737,7 @@ function ProductEducationDrawer({
           )}
         </div>
 
-        {(isPostPurchase || isCommerceShield) && (
+        {(isPostPurchase || isCommerceShield || isInsureShield) && (
           <div className="prodedu__footer">
             <button type="button" className="prodedu__footer-ghost" onClick={onClose}>
               Close
@@ -681,6 +748,7 @@ function ProductEducationDrawer({
               onClick={() => {
                 onClose();
                 if (isCommerceShield) onConfigureCommerceShieldInLynkUp();
+                else if (isInsureShield) onConfigureInsureShieldInLynkUp();
                 else onConfigureInLynkUp();
               }}
             >
@@ -688,9 +756,13 @@ function ProductEducationDrawer({
                 ? commerceShieldPurchased
                   ? "Manage in Integrate"
                   : "Configure in Integrate"
-                : postPurchasePurchased
-                  ? "Manage in Integrate"
-                  : "Configure in Integrate"}
+                : isInsureShield
+                  ? insureShieldPurchased
+                    ? "Manage in Integrate"
+                    : "Configure in Integrate"
+                  : postPurchasePurchased
+                    ? "Manage in Integrate"
+                    : "Configure in Integrate"}
               <ArrowRightAltIcon size={18} />
             </button>
           </div>
@@ -919,7 +991,7 @@ function CommerceShieldManageDrawer({
       <div className="prodedu__body">
         <p className="prodedu__intro">
           CommerceShield scores every order for fraud in real time and adds coverage to your
-          Commerce Hub orders. Adjust your settings in LynkUp, or cancel anytime.
+          UPS Digital Solutions orders. Adjust your settings in LynkUp, or cancel anytime.
         </p>
 
         <section className="ppmanage">
@@ -990,8 +1062,10 @@ function ProductsTab({
   postPurchasePurchased,
   postPurchaseSubs,
   commerceShieldPurchased,
+  insureShieldPurchased,
   onConfigureInLynkUp,
   onConfigureCommerceShieldInLynkUp,
+  onConfigureInsureShieldInLynkUp,
   onConfigureCapability,
   onCancelAddon,
   onCancelCommerceShield,
@@ -1001,8 +1075,10 @@ function ProductsTab({
   postPurchasePurchased: boolean;
   postPurchaseSubs: Record<CapKey, boolean>;
   commerceShieldPurchased: boolean;
+  insureShieldPurchased: boolean;
   onConfigureInLynkUp: () => void;
   onConfigureCommerceShieldInLynkUp: () => void;
+  onConfigureInsureShieldInLynkUp: () => void;
   onConfigureCapability: (k: CapKey) => void;
   onCancelAddon: (k: CapKey) => void;
   onCancelCommerceShield: () => void;
@@ -1013,7 +1089,7 @@ function ProductsTab({
   const [managingInsure, setManagingInsure] = useState(false);
   const [managingCs, setManagingCs] = useState(false);
   const activeProductIds: ProductId[] = [
-    "insureshield-shipping",
+    ...(insureShieldPurchased ? (["insureshield-shipping"] as ProductId[]) : []),
     ...(commerceShieldPurchased ? (["commerceshield"] as ProductId[]) : []),
     ...(postPurchasePurchased ? (["post-purchase"] as ProductId[]) : []),
   ];
@@ -1090,8 +1166,10 @@ function ProductsTab({
           product={active}
           postPurchasePurchased={postPurchasePurchased}
           commerceShieldPurchased={commerceShieldPurchased}
+          insureShieldPurchased={insureShieldPurchased}
           onConfigureInLynkUp={onConfigureInLynkUp}
           onConfigureCommerceShieldInLynkUp={onConfigureCommerceShieldInLynkUp}
+          onConfigureInsureShieldInLynkUp={onConfigureInsureShieldInLynkUp}
           onClose={() => setActive(null)}
         />
       )}
@@ -1151,8 +1229,10 @@ export default function Profile({
   postPurchasePurchased,
   postPurchaseSubs,
   commerceShieldPurchased,
+  insureShieldPurchased,
   onConfigureInLynkUp,
   onConfigureCommerceShieldInLynkUp,
+  onConfigureInsureShieldInLynkUp,
   onConfigureCapability,
   onCancelAddon,
   onCancelCommerceShield,
@@ -1161,8 +1241,10 @@ export default function Profile({
   postPurchasePurchased: boolean;
   postPurchaseSubs: Record<CapKey, boolean>;
   commerceShieldPurchased: boolean;
+  insureShieldPurchased: boolean;
   onConfigureInLynkUp: () => void;
   onConfigureCommerceShieldInLynkUp: () => void;
+  onConfigureInsureShieldInLynkUp: () => void;
   onConfigureCapability: (k: CapKey) => void;
   onCancelAddon: (k: CapKey) => void;
   onCancelCommerceShield: () => void;
@@ -1172,6 +1254,8 @@ export default function Profile({
   const [productDrawerOpen, setProductDrawerOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const compact = tab === "products" && productDrawerOpen;
+  // The Policy tab only applies once an InsureShield policy is active.
+  const visibleTabs = insureShieldPurchased ? tabs : tabs.filter((t) => t.key !== "policy");
 
   useEffect(() => {
     if (!toast) return;
@@ -1193,7 +1277,7 @@ export default function Profile({
         </div>
 
         <div className="profile-tabs">
-          {tabs.map((t) => (
+          {visibleTabs.map((t) => (
             <button
               key={t.key}
               className={`profile-tab${tab === t.key ? " is-active" : ""}`}
@@ -1208,7 +1292,7 @@ export default function Profile({
           {tab === "settings" ? (
             <SettingsTab />
           ) : tab === "policy" ? (
-            <PolicyTab />
+            insureShieldPurchased ? <PolicyTab /> : <SettingsTab />
           ) : tab === "billing" ? (
             <BillingTab postPurchaseActive={postPurchasePurchased} subs={postPurchaseSubs} />
           ) : tab === "products" ? (
@@ -1217,8 +1301,10 @@ export default function Profile({
               postPurchasePurchased={postPurchasePurchased}
               postPurchaseSubs={postPurchaseSubs}
               commerceShieldPurchased={commerceShieldPurchased}
+              insureShieldPurchased={insureShieldPurchased}
               onConfigureInLynkUp={onConfigureInLynkUp}
               onConfigureCommerceShieldInLynkUp={onConfigureCommerceShieldInLynkUp}
+              onConfigureInsureShieldInLynkUp={onConfigureInsureShieldInLynkUp}
               onConfigureCapability={onConfigureCapability}
               onCancelAddon={onCancelAddon}
               onCancelCommerceShield={onCancelCommerceShield}

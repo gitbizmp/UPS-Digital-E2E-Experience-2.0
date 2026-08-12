@@ -20,6 +20,7 @@ import {
 } from "./icons";
 import { type CapKey, type PaymentMethod, PP_ADDON_PRICE } from "../data/postPurchase";
 import Onboarding from "./Onboarding";
+import InsureShieldConfig from "./InsureShieldConfig";
 import "./LynkUpHub.css";
 
 /* ============================ Small inline icons ============================ */
@@ -141,7 +142,7 @@ const sideItems: SideItem[] = [
     subtabs: [
       { label: "Post Purchase", nav: "landing" },
       { label: "CommerceShield", nav: "commerceshield" },
-      { label: "InsureShield" },
+      { label: "InsureShield", nav: "insureshield" },
     ],
   },
 ];
@@ -153,8 +154,9 @@ function LynkUpSidebar({ view, onNavigate, collapsed = false }: { view: LynView;
     if (!nav) return false;
     if (nav === "home") return view === "home";
     if (nav === "commerceshield") return view === "commerceshield";
+    if (nav === "insureshield") return view === "insureshield";
     // "Post Purchase" covers the landing and every capability config view.
-    return view !== "home" && view !== "commerceshield";
+    return view !== "home" && view !== "commerceshield" && view !== "insureshield";
   };
   return (
     <aside className={`lyn-side${collapsed ? " lyn-side--collapsed" : ""}`}>
@@ -242,8 +244,10 @@ function ValueBanner() {
       {valueProps.map((v) => (
         <div className="lyn-value__item" key={v.title}>
           <span className="lyn-value__icon">{v.icon}</span>
-          <p className="lyn-value__title">{v.title}</p>
-          <p className="lyn-value__body">{v.body}</p>
+          <div className="lyn-value__text">
+            <p className="lyn-value__title">{v.title}</p>
+            <p className="lyn-value__body">{v.body}</p>
+          </div>
         </div>
       ))}
     </div>
@@ -460,7 +464,7 @@ function Landing({
           </div>
           <p className="lyn-gate__lede">
             Post Purchase gives your customers a branded experience after they order, with tracking,
-            notifications, feedback, and self serve resolutions. Turn it on to add it to Commerce Hub and
+            notifications, feedback, and self serve resolutions. Turn it on to add it to UPS Digital Solutions and
             start configuring each piece.
           </p>
         </div>
@@ -540,6 +544,7 @@ function Section({
   onToggleOpen,
   onToggleEnable,
   enabled = true,
+  hideTitle,
   children,
 }: {
   title: string;
@@ -548,25 +553,28 @@ function Section({
   onToggleOpen?: () => void;
   onToggleEnable?: (v: boolean) => void;
   enabled?: boolean;
+  hideTitle?: boolean;
   children?: React.ReactNode;
 }) {
   const collapsible = onToggleOpen !== undefined;
   return (
     <div className={`lyn-sec${open === false ? " lyn-sec--collapsed" : ""}`}>
-      <div className="lyn-sec__head">
-        <button
-          type="button"
-          className="lyn-sec__title-btn"
-          onClick={onToggleOpen}
-          disabled={!collapsible}
-        >
-          {collapsible && (
-            <ChevronDown size={18} className={`lyn-sec__chev${open ? " is-open" : ""}`} />
-          )}
-          <span className="lyn-sec__title">{title}</span>
-        </button>
-        {toggle && onToggleEnable && <Toggle checked={enabled} onChange={onToggleEnable} />}
-      </div>
+      {!hideTitle && (
+        <div className="lyn-sec__head">
+          <button
+            type="button"
+            className="lyn-sec__title-btn"
+            onClick={onToggleOpen}
+            disabled={!collapsible}
+          >
+            {collapsible && (
+              <ChevronDown size={18} className={`lyn-sec__chev${open ? " is-open" : ""}`} />
+            )}
+            <span className="lyn-sec__title">{title}</span>
+          </button>
+          {toggle && onToggleEnable && <Toggle checked={enabled} onChange={onToggleEnable} />}
+        </div>
+      )}
       {open !== false && children && <div className="lyn-sec__body">{children}</div>}
     </div>
   );
@@ -1432,10 +1440,21 @@ function SimpleConfig({
 
 /* ================================ Shell ================================== */
 
-type LynView = "home" | "landing" | "commerceshield" | CapKey;
+type LynView = "home" | "landing" | "commerceshield" | "insureshield" | CapKey;
 
-function LynkUpHome({ onGoToOperate }: { onGoToOperate?: () => void }) {
-  return <Onboarding onGoToOperate={onGoToOperate} />;
+function LynkUpHome({
+  onGoToOperate,
+  onCommerceShieldConfigured,
+}: {
+  onGoToOperate?: () => void;
+  onCommerceShieldConfigured?: (plan?: "os" | "eos") => void;
+}) {
+  return (
+    <Onboarding
+      onGoToOperate={onGoToOperate}
+      onCommerceShieldConfigured={onCommerceShieldConfigured}
+    />
+  );
 }
 
 function PostPurchaseGate({ onTurnOn }: { onTurnOn: () => void }) {
@@ -1457,7 +1476,7 @@ function PostPurchaseGate({ onTurnOn }: { onTurnOn: () => void }) {
         </div>
         <p className="lyn-gate__lede">
           Post Purchase gives your customers a branded experience after they order, with tracking,
-          notifications, feedback, and self serve resolutions. Turn it on to add it to Commerce Hub and
+          notifications, feedback, and self serve resolutions. Turn it on to add it to UPS Digital Solutions and
           start configuring each piece.
         </p>
         <ul className="lyn-gate__list">
@@ -1520,37 +1539,6 @@ function CommerceShieldValueBand() {
   );
 }
 
-function CommerceShieldPreview() {
-  const rows = [
-    { score: 812, covered: true },
-    { score: 774, covered: true },
-    { score: 542, covered: false },
-  ];
-  return (
-    <div className="lyn-preview lyn-preview--orders" aria-hidden="true">
-      <div className="lyn-preview__head">
-        <span className="lyn-preview__dot" />
-        <span className="lyn-preview__skel-line" style={{ width: 54 }} />
-      </div>
-      <p className="lyn-preview__group">Orders</p>
-      <div className="lyn-csprev__row lyn-csprev__row--head">
-        <span className="lyn-csprev__order">Order</span>
-        <span className="lyn-csprev__new">Score</span>
-        <span className="lyn-csprev__new">Coverage</span>
-      </div>
-      {rows.map((r, i) => (
-        <div className="lyn-csprev__row" key={i}>
-          <span className="lyn-preview__skel-line" style={{ width: 44 }} />
-          <span className="lyn-csprev__score">{r.score}</span>
-          <span className={`lyn-csprev__cov${r.covered ? "" : " is-off"}`}>
-            {r.covered ? "Covered" : "Not covered"}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const CS_PLANS = {
   os: {
     name: "Order Scoring",
@@ -1583,6 +1571,18 @@ const CS_PLANS = {
     ],
   },
 } as const;
+
+/* score → risk band helpers for the manual-review slider */
+function scoreBand(score: string): "high" | "med" | "low" {
+  const n = Number(score);
+  if (n <= 399) return "high";
+  if (n <= 699) return "med";
+  return "low";
+}
+function scoreBandLabel(score: string): string {
+  const band = scoreBand(score);
+  return band === "high" ? "High risk" : band === "med" ? "Medium risk" : "Low risk";
+}
 
 function CommerceShieldConfig({
   active,
@@ -1628,62 +1628,80 @@ function CommerceShieldConfig({
         {active ? (
           <>
             <div className="lyn-return" role="status">
-              <CommerceShieldPreview />
               <div className="lyn-return__text">
                 <p className="lyn-return__title">
                   <span className="lyn-return__icon"><CheckCircleIcon size={18} /></span>
                   CommerceShield is live
                 </p>
                 <p className="lyn-return__body">
-                  Order scoring and coverage now appear in your Commerce Hub orders table.
+                  Order scoring and coverage now appear in your UPS Digital Solutions orders table.
                 </p>
-                <div className="lyn-return__actions">
-                  <button type="button" className="lyn-return__cta" onClick={onGoToStoreOps}>
-                    Go to Operate
-                    <ArrowRightAltIcon size={16} />
-                  </button>
-                  <button type="button" className="lyn-return__deactivate" onClick={onDeactivate}>
-                    Deactivate
-                  </button>
-                </div>
               </div>
-            </div>
-
-            <div className="lyn-cs-planbar">
-              <div className="lyn-cs-planbar__text">
-                <span className="lyn-cs-planbar__eyebrow">Your plan</span>
-                <span className="lyn-cs-planbar__name">{activePlan.name}</span>
-              </div>
-              <span className="lyn-cs-planbar__price">
-                {activePlan.amount}<small>{activePlan.per}</small>
-                {activePlan.priceSub && <em>{activePlan.priceSub}</em>}
-              </span>
+              <button type="button" className="lyn-return__cta" onClick={onGoToStoreOps}>
+                Go to Operate
+                <ArrowRightAltIcon size={16} />
+              </button>
             </div>
 
             <div className="lyn-config">
-              <Section title="Risk mitigation tools">
-                <p className="lyn-sec__desc">Fine-tune how flagged orders are reviewed and resolved.</p>
+              <div className="lyn-cs-planbar">
+                <div className="lyn-cs-planbar__text">
+                  <span className="lyn-cs-planbar__eyebrow">Your plan</span>
+                  <span className="lyn-cs-planbar__name">{activePlan.name}</span>
+                </div>
+                <span className="lyn-cs-planbar__price">
+                  {activePlan.amount}<small>{activePlan.per}</small>
+                  {activePlan.priceSub && <em>{activePlan.priceSub}</em>}
+                </span>
+                <div className="lyn-cs-planbar__toggle">
+                  <span className="lyn-cs-planbar__toggle-label">Enabled</span>
+                  <Toggle checked onChange={(v) => { if (!v) onDeactivate(); }} />
+                </div>
+              </div>
+
+              <Section title="Risk mitigation tools" hideTitle>
                 <div className="lyn-cs-sets">
-                  <div className="lyn-cs-set">
-                    <div className="lyn-inline-toggle">
-                      <div>
-                        <span className="lyn-inline-toggle__label">Manual Review</span>
-                        <span className="lyn-inline-toggle__sub">Automatically hold high-risk orders so you can review them. Orders at or below the chosen score (100&ndash;1,000) are placed on hold.</span>
+                  <div className={`lyn-cs-set${manualReview ? " is-on" : ""}`}>
+                    <div className="lyn-cs-set__head">
+                      <div className="lyn-cs-set__titles">
+                        <span className="lyn-cs-set__label">Manual Review</span>
+                        <span className="lyn-cs-set__sub">Automatically hold high-risk orders so you can review them before they ship.</span>
                       </div>
                       <Toggle checked={manualReview} onChange={setManualReview} />
                     </div>
                     {manualReview && (
                       <div className="lyn-cs-set__field">
-                        <TextField label="Hold orders at or below score" value={manualScore} onChange={setManualScore} />
+                        <div className="lyn-cs-slider">
+                          <div className="lyn-cs-slider__top">
+                            <span className="lyn-cs-slider__label">Hold orders at or below score</span>
+                            <span className={`lyn-cs-slider__value lyn-cs-slider__value--${scoreBand(manualScore)}`}>
+                              {manualScore} · {scoreBandLabel(manualScore)}
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min={100}
+                            max={1000}
+                            step={50}
+                            value={manualScore}
+                            onChange={(e) => setManualScore(e.target.value)}
+                            className="lyn-cs-slider__range"
+                          />
+                          <div className="lyn-cs-slider__scale">
+                            <span>High risk</span>
+                            <span>Medium</span>
+                            <span>Low risk</span>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="lyn-cs-set">
-                    <div className="lyn-inline-toggle">
-                      <div>
-                        <span className="lyn-inline-toggle__label">Email Notification</span>
-                        <span className="lyn-inline-toggle__sub">Get notified whenever an order is flagged as high-risk.</span>
+                  <div className={`lyn-cs-set${emailNotify ? " is-on" : ""}`}>
+                    <div className="lyn-cs-set__head">
+                      <div className="lyn-cs-set__titles">
+                        <span className="lyn-cs-set__label">Email Notification</span>
+                        <span className="lyn-cs-set__sub">Get notified whenever an order is flagged as high-risk.</span>
                       </div>
                       <Toggle checked={emailNotify} onChange={setEmailNotify} />
                     </div>
@@ -1694,11 +1712,11 @@ function CommerceShieldConfig({
                     )}
                   </div>
 
-                  <div className="lyn-cs-set">
-                    <div className="lyn-inline-toggle">
-                      <div>
-                        <span className="lyn-inline-toggle__label">Order Scoring Filters</span>
-                        <span className="lyn-inline-toggle__sub">Excluded orders are not scored, not charged, and not eligible for the guarantee.</span>
+                  <div className={`lyn-cs-set${scoringFilters ? " is-on" : ""}`}>
+                    <div className="lyn-cs-set__head">
+                      <div className="lyn-cs-set__titles">
+                        <span className="lyn-cs-set__label">Order Scoring Filters</span>
+                        <span className="lyn-cs-set__sub">Excluded orders are not scored, not charged, and not eligible for the guarantee.</span>
                       </div>
                       <Toggle checked={scoringFilters} onChange={setScoringFilters} />
                     </div>
@@ -1714,11 +1732,11 @@ function CommerceShieldConfig({
                     )}
                   </div>
 
-                  <div className="lyn-cs-set">
-                    <div className="lyn-inline-toggle">
-                      <div>
-                        <span className="lyn-inline-toggle__label">Risk Orchestration Rules</span>
-                        <span className="lyn-inline-toggle__sub">Automatically resolve orders based on risk score and other criteria.</span>
+                  <div className={`lyn-cs-set${orchestration ? " is-on" : ""}`}>
+                    <div className="lyn-cs-set__head">
+                      <div className="lyn-cs-set__titles">
+                        <span className="lyn-cs-set__label">Risk Orchestration Rules</span>
+                        <span className="lyn-cs-set__sub">Automatically resolve orders based on risk score and other criteria.</span>
                       </div>
                       <Toggle checked={orchestration} onChange={setOrchestration} />
                     </div>
@@ -1872,7 +1890,10 @@ export default function LynkUpHub({
   onStoreOpsEnabled,
   onDeactivate,
   onCommerceShieldConfigured,
+  onInsureShieldActivated,
+  insureShieldPurchased,
   onGoToStoreOpsOrders,
+  onGoToStoreOpsHome,
   postPurchaseActive,
   subs,
   onSubscribe,
@@ -1888,7 +1909,10 @@ export default function LynkUpHub({
   onStoreOpsEnabled: () => void;
   onDeactivate: () => void;
   onCommerceShieldConfigured: (active: boolean) => void;
+  onInsureShieldActivated: () => void;
+  insureShieldPurchased: boolean;
   onGoToStoreOpsOrders: () => void;
+  onGoToStoreOpsHome: () => void;
   postPurchaseActive: boolean;
   subs: Record<CapKey, boolean>;
   onSubscribe: (k: CapKey) => void;
@@ -1987,9 +2011,39 @@ export default function LynkUpHub({
         <LynkUpSidebar view={view} onNavigate={setView} collapsed={sideCollapsed} />
         <div className="lyn-content">
 
-        <main ref={mainRef} className={`lyn-main${view === "home" ? " lyn-main--home" : ""}${view === "hosted-tracking" ? " lyn-main--studio" : ""}${view === "commerceshield" ? " lyn-main--cs" : ""}${subscribeTarget && view !== "hosted-tracking" && view !== "commerceshield" ? " lyn-main--split" : ""}`}>
+        <main ref={mainRef} className={`lyn-main${view === "home" ? " lyn-main--home" : ""}${view === "landing" && !subscribeTarget ? " lyn-main--landing" : ""}${view === "hosted-tracking" ? " lyn-main--studio" : ""}${view === "commerceshield" || view === "insureshield" ? " lyn-main--cs" : ""}${subscribeTarget && view !== "hosted-tracking" && view !== "commerceshield" && view !== "insureshield" ? " lyn-main--split" : ""}`}>
           {view === "home" ? (
-            <LynkUpHome onGoToOperate={onGoToStoreOpsOrders} />
+            <LynkUpHome
+              onGoToOperate={onGoToStoreOpsOrders}
+              onCommerceShieldConfigured={(plan) => {
+                if (plan) setCsPlan(plan);
+                setCsActive(true);
+                onCommerceShieldConfigured(true);
+              }}
+            />
+          ) : view === "insureshield" ? (
+            <>
+              <nav className="lyn-crumbs" aria-label="Breadcrumb">
+                <button type="button" onClick={() => setView("home")}>Home</button>
+                <ChevronRight size={14} />
+                <button type="button" onClick={() => setView("landing")}>Product Configurations</button>
+                <ChevronRight size={14} />
+                <span>InsureShield</span>
+              </nav>
+              <h1 className="lyn-title">InsureShield&reg; Configuration</h1>
+              <div className="lyn-main__body lyn-main__body--cs">
+                <div className="lyn-main__page">
+                  <InsureShieldConfig
+                    activated={insureShieldPurchased}
+                    onActivate={() => {
+                      onInsureShieldActivated();
+                      setToast("InsureShield\u00ae Connect policy activated.");
+                    }}
+                    onGoToOperate={onGoToStoreOpsHome}
+                  />
+                </div>
+              </div>
+            </>
           ) : view === "commerceshield" ? (
             <>
               <nav className="lyn-crumbs" aria-label="Breadcrumb">
@@ -2032,7 +2086,7 @@ export default function LynkUpHub({
 
                     <div className="lyn-flyout__body">
                       <p className="lyn-flyout__desc">
-                        Turn on real-time fraud scoring and chargeback protection for your Commerce Hub orders.
+                        Turn on real-time fraud scoring and chargeback protection for your UPS Digital Solutions orders.
                       </p>
 
                       <div className="lyn-flyout__price">

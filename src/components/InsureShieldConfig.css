@@ -1,0 +1,515 @@
+/* ===================== InsureShield Configuration (widget) ===================== */
+.isc {
+  --isc-teal: #0a8080;
+  --isc-teal-dark: #076a6a;
+  --isc-teal-tint: #e7f4f4;
+  --isc-gold: #ffb500;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 4px 0 0;
+}
+
+/* ------------------------------ Value band ------------------------------ */
+.isc-band {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, #e7f4f4 0%, rgba(231, 244, 244, 0) 55%),
+    radial-gradient(120% 140% at 100% 0%, #fdeef4 0%, rgba(253, 238, 244, 0) 55%),
+    linear-gradient(180deg, #fbfefe 0%, #f2fafa 100%);
+  border: 1px solid var(--lyn-line);
+}
+.isc-band__item {
+  text-align: left;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+.isc-band__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--lyn-line-strong);
+  color: var(--isc-teal);
+  box-shadow: 0 4px 10px -4px rgba(10, 128, 128, 0.28);
+}
+.isc-band__title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lyn-ink);
+}
+.isc-band__body {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--lyn-muted);
+}
+
+/* ------------------------------- Widget ------------------------------- */
+.isc-widget {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--lyn-line);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gradient progress bar (pinned to the top of the widget) */
+.isc-widget__progress {
+  flex: none;
+  padding: 22px 32px;
+  border-bottom: 1px solid var(--lyn-line);
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+}
+.pb-track {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #e6ebf2;
+  overflow: hidden;
+}
+.pb-gradient {
+  --pb-value: 8%;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      270deg,
+      #a5e6e4,
+      #6cd43f,
+      #ffc800,
+      #d732a8,
+      #0662bb,
+      #0a8080
+    )
+    0 0 / 100% 100%;
+  clip-path: inset(0 calc(100% - var(--pb-value)) 0 0 round 5px);
+  transition: clip-path 0.25s ease;
+}
+
+.isc-widget__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 36px 32px 40px;
+}
+
+/* ------------------------------- Wizard ------------------------------- */
+.isc-wizard {
+  text-align: center;
+}
+.isc-wizard__title {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--lyn-ink);
+}
+.isc-wizard__sub {
+  margin: 0 auto;
+  max-width: 520px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--lyn-muted);
+}
+
+.isc-qs {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  max-width: 520px;
+  margin: 36px auto 0;
+}
+
+/* Each newly revealed question slides down into view */
+.isc-q {
+  text-align: center;
+  animation: isc-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes isc-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.isc-q__title {
+  margin: 0 0 18px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lyn-ink);
+}
+.isc-q__note {
+  margin: 14px auto 0;
+  max-width: 440px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--lyn-faint);
+}
+
+.isc-q__aside {
+  margin: 0 0 16px;
+}
+.isc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--isc-teal);
+  text-decoration: underline;
+}
+.isc-link__chev {
+  transition: transform 0.18s ease;
+}
+.isc-link__chev.is-open {
+  transform: rotate(180deg);
+}
+.isc-q__list {
+  list-style: disc;
+  text-align: left;
+  max-width: 360px;
+  margin: 14px auto 0;
+  padding-left: 24px;
+  color: var(--lyn-text);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+/* Options (radio cards), centered stack */
+.isc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: left;
+}
+.isc-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--lyn-line);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.isc-option:hover {
+  border-color: var(--isc-teal);
+  background: var(--isc-teal-tint);
+}
+.isc-option--selected {
+  border-color: var(--isc-teal);
+  background: var(--isc-teal-tint);
+  box-shadow: inset 0 0 0 1px var(--isc-teal);
+}
+.isc-option__radio {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--lyn-faint);
+  transition: border-color 0.15s ease;
+}
+.isc-option--selected .isc-option__radio {
+  border-color: var(--isc-teal);
+}
+.isc-option--selected .isc-option__radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--isc-teal);
+}
+.isc-option__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.isc-option__label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--lyn-ink);
+}
+.isc-option__sub {
+  font-size: 12.5px;
+  color: var(--lyn-muted);
+}
+
+/* Select */
+.isc-select {
+  position: relative;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.isc-select select {
+  width: 100%;
+  height: 52px;
+  padding: 0 44px 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--lyn-line);
+  background: #fff;
+  font-size: 15px;
+  color: var(--lyn-ink);
+  appearance: none;
+  cursor: pointer;
+}
+.isc-select select:focus {
+  outline: none;
+  border-color: var(--isc-teal);
+  box-shadow: 0 0 0 1px var(--isc-teal);
+}
+.isc-select > svg {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--lyn-muted);
+  pointer-events: none;
+}
+
+/* Back button */
+.isc-back {
+  display: inline-flex;
+  align-items: center;
+  margin: 36px auto 0;
+  padding: 10px 28px;
+  border: 1.5px solid var(--isc-teal);
+  border-radius: 9999px;
+  background: #fff;
+  color: var(--isc-teal);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.isc-back:hover {
+  background: var(--isc-teal-tint);
+}
+.isc-wizard .isc-back {
+  display: flex;
+}
+
+/* ---------------------------- Recommendation ---------------------------- */
+.isc-rec {
+  text-align: center;
+  animation: isc-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.isc-rec__intro {
+  text-align: center;
+  margin-bottom: 26px;
+}
+.isc-rec__title {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--isc-teal);
+}
+.isc-rec__sub {
+  margin: 0 auto;
+  max-width: 560px;
+  font-size: 14px;
+  color: var(--lyn-muted);
+}
+.isc-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.isc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 26px 18px 22px;
+  border-radius: 14px;
+  border: 1px solid var(--lyn-line);
+  background: #fff;
+}
+.isc-card--recommended {
+  border-color: var(--isc-teal);
+  box-shadow: 0 10px 26px rgba(10, 128, 128, 0.14);
+}
+.isc-card__badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--isc-teal);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.isc-card__badge svg {
+  color: var(--isc-gold);
+}
+.isc-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--isc-teal-tint);
+  color: var(--isc-teal);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.isc-card__name {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lyn-ink);
+}
+.isc-card__desc {
+  margin: 0 0 18px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--lyn-muted);
+  flex: 1;
+}
+.isc-card__cta {
+  width: 100%;
+  justify-content: center;
+}
+.isc-card--recommended .isc-card__cta.lyn-btn--primary {
+  background: var(--isc-teal);
+}
+.isc-card--recommended .isc-card__cta.lyn-btn--primary:hover {
+  background: var(--isc-teal-dark);
+}
+
+/* ------------------------------- Success ------------------------------- */
+.isc-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  margin: 24px auto 0;
+  padding: 40px 32px 36px;
+  background: #fff;
+  border: 1px solid var(--lyn-line);
+  border-radius: 18px;
+}
+.isc-success__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--isc-teal-tint);
+  color: var(--isc-teal);
+  margin-bottom: 18px;
+}
+.isc-success__title {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--lyn-ink);
+}
+.isc-success__body {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--lyn-muted);
+}
+.isc-success__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 28px;
+  padding: 18px 0 24px;
+  margin-bottom: 24px;
+  width: 100%;
+  border-top: 1px solid var(--lyn-line);
+  border-bottom: 1px solid var(--lyn-line);
+}
+.isc-success__metaitem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.isc-success__metalabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--lyn-faint);
+}
+.isc-success__metaval {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lyn-ink);
+}
+.isc-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--isc-teal-tint);
+  color: var(--isc-teal-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.isc-success .lyn-btn--primary {
+  background: var(--isc-teal);
+}
+.isc-success .lyn-btn--primary:hover {
+  background: var(--isc-teal-dark);
+}
+
+/* ------------------------------ Responsive ------------------------------ */
+@media (max-width: 1000px) {
+  .isc-band { grid-template-columns: 1fr; }
+  .isc-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .isc-cards { grid-template-columns: 1fr; }
+  .isc-q__list { grid-template-columns: 1fr 1fr; }
+}

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { ChevronRight, CheckIcon } from "./icons";
 import ConnectStorePanel from "./ConnectStorePanel";
-import InsurancePreferences from "./InsurancePreferences";
-import Dashboard from "./Dashboard";
+import CommerceShieldSetupPanel from "./CommerceShieldSetupPanel";
 import "./Dashboard.css";
 
 /* -------------------------------- Onboarding card ------------------------------- */
@@ -16,17 +15,17 @@ type OnboardingTask = {
 
 const onboardingTasks: OnboardingTask[] = [
   {
+    id: "commerceshield",
+    title: "Set up CommerceShield",
+    desc: "Turn on real-time fraud scoring and chargeback protection for your orders.",
+    cta: "Set Up",
+    status: "active",
+  },
+  {
     id: "ecommerce",
     title: "Connect e-Commerce",
     desc: "Connect orders from your e-commerce and sales channels platforms.",
     cta: "Connect",
-    status: "active",
-  },
-  {
-    id: "insurance",
-    title: "Insurance Preferences",
-    desc: "Configure your insurance preferences for coverage to activate your policy.",
-    cta: "Choose Preferences",
     status: "pending",
   },
 ];
@@ -45,18 +44,18 @@ function TaskDot({ status }: { status: OnboardingTask["status"] }) {
 function OnboardingCard({
   statuses,
   onConnect,
-  onInsurance,
+  onCommerceShield,
 }: {
   statuses: Record<string, OnboardingTask["status"]>;
   onConnect: () => void;
-  onInsurance: () => void;
+  onCommerceShield: () => void;
 }) {
   const tasks = onboardingTasks.map((t) => ({ ...t, status: statuses[t.id] ?? t.status }));
   const done = tasks.filter((t) => t.status === "complete").length;
 
   const handlers: Record<string, () => void> = {
     ecommerce: onConnect,
-    insurance: onInsurance,
+    commerceshield: onCommerceShield,
   };
 
   return (
@@ -159,8 +158,8 @@ function OperateHandoff({ onGoToOperate }: { onGoToOperate?: () => void }) {
         </span>
         <h2 className="lynk-handoff__title">You&rsquo;re ready to go, Alex!</h2>
         <p className="lynk-handoff__lead">
-          Your store is connected and your insurance is active. Head over to
-          <strong> Operate</strong> to track shipments, manage orders, and handle claims.
+          Your store is connected and CommerceShield is protecting your orders. Head over to
+          <strong> Operate</strong> to track shipments, manage orders, and review order risk.
         </p>
         {onGoToOperate && (
           <button className="lynk-handoff__cta" onClick={onGoToOperate}>
@@ -175,23 +174,28 @@ function OperateHandoff({ onGoToOperate }: { onGoToOperate?: () => void }) {
 }
 
 /* ----------------------------- Self-contained onboarding ----------------------------- */
-export default function Onboarding({ onGoToOperate }: { onGoToOperate?: () => void }) {
-  const [panel, setPanel] = useState<null | "connect" | "insurance">(null);
+export default function Onboarding({
+  onGoToOperate,
+  onCommerceShieldConfigured,
+}: {
+  onGoToOperate?: () => void;
+  onCommerceShieldConfigured?: (plan?: "os" | "eos") => void;
+}) {
+  const [panel, setPanel] = useState<null | "connect" | "commerceshield">(null);
   const [ecommerceDone, setEcommerceDone] = useState(false);
-  const [insuranceDone, setInsuranceDone] = useState(false);
+  const [commerceShieldDone, setCommerceShieldDone] = useState(false);
 
   const taskStatuses: Record<string, OnboardingTask["status"]> = {
-    ecommerce: ecommerceDone ? "complete" : "active",
-    insurance: insuranceDone ? "complete" : ecommerceDone ? "active" : "pending",
+    commerceshield: commerceShieldDone ? "complete" : "active",
+    ecommerce: ecommerceDone ? "complete" : commerceShieldDone ? "active" : "pending",
   };
 
-  if (ecommerceDone && insuranceDone) {
+  if (ecommerceDone && commerceShieldDone) {
     return (
       <div className="lynk-complete">
         <div className="lynk-complete__inner">
           <OperateHandoff onGoToOperate={onGoToOperate} />
         </div>
-        <Dashboard />
       </div>
     );
   }
@@ -202,7 +206,7 @@ export default function Onboarding({ onGoToOperate }: { onGoToOperate?: () => vo
         <OnboardingCard
           statuses={taskStatuses}
           onConnect={() => setPanel("connect")}
-          onInsurance={() => setPanel("insurance")}
+          onCommerceShield={() => setPanel("commerceshield")}
         />
       </div>
       <ConnectStorePanel
@@ -210,10 +214,13 @@ export default function Onboarding({ onGoToOperate }: { onGoToOperate?: () => vo
         onClose={() => setPanel(null)}
         onComplete={() => setEcommerceDone(true)}
       />
-      <InsurancePreferences
-        open={panel === "insurance"}
+      <CommerceShieldSetupPanel
+        open={panel === "commerceshield"}
         onClose={() => setPanel(null)}
-        onComplete={() => setInsuranceDone(true)}
+        onComplete={(plan) => {
+          setCommerceShieldDone(true);
+          onCommerceShieldConfigured?.(plan);
+        }}
       />
     </div>
   );

@@ -3,29 +3,28 @@ import {
   BellIcon,
   AppsIcon,
   MenuIcon,
-  DashboardIcon,
-  ConversionPathIcon,
-  GlobeIcon,
-  CodeIcon,
-  type IconProps,
 } from "./icons";
 import upsLogo from "../assets/logos/ups-logo.png";
+import operateImg from "../assets/apps/Operate.png";
+import integrateImg from "../assets/apps/Integrate.png";
+import controlImg from "../assets/apps/Control.png";
+import developImg from "../assets/apps/Develop.png";
 import "./TopBar.css";
 
 type AppItem = {
   key: string;
   label: string;
   bg: string;
-  Icon: (p: IconProps) => JSX.Element;
+  img: string;
 };
 
 export type AppKey = "store-ops" | "lynkup" | "control-tower" | "develop";
 
 export const apps: AppItem[] = [
-  { key: "store-ops", label: "Operate", bg: "linear-gradient(135deg, #00bbbb 0%, #009292 100%)", Icon: DashboardIcon },
-  { key: "lynkup", label: "Integrate", bg: "linear-gradient(58.77deg, #0662bb 9.54%, #00337b 100%)", Icon: ConversionPathIcon },
-  { key: "control-tower", label: "Control", bg: "linear-gradient(63.79deg, #613413 9.54%, #7e5844 100%)", Icon: GlobeIcon },
-  { key: "develop", label: "Develop", bg: "linear-gradient(135deg, #6ca342 0%, #3f810c 100%)", Icon: CodeIcon },
+  { key: "store-ops", label: "Operate", bg: "linear-gradient(135deg, #00bbbb 0%, #009292 100%)", img: operateImg },
+  { key: "lynkup", label: "Integrate", bg: "linear-gradient(58.77deg, #0662bb 9.54%, #00337b 100%)", img: integrateImg },
+  { key: "control-tower", label: "Control", bg: "linear-gradient(63.79deg, #613413 9.54%, #7e5844 100%)", img: controlImg },
+  { key: "develop", label: "Develop", bg: "linear-gradient(135deg, #6ca342 0%, #3f810c 100%)", img: developImg },
 ];
 
 export default function TopBar({
@@ -84,14 +83,11 @@ export default function TopBar({
         )}
         <div className="topbar__brand">
           <img src={upsLogo} alt="UPS" className="topbar__brand-logo" />
-          <span className="topbar__brand-name">CommerceHub</span>
+          <span className="topbar__brand-name">UPS Digital Solutions</span>
           {activeAppItem && !hideSuite && (
             <>
               <span className="topbar__brand-divider">|</span>
-              <span
-                className="topbar__brand-page"
-                style={{ backgroundImage: activeAppItem.bg }}
-              >
+              <span className="topbar__brand-page">
                 {activeAppItem.label}
               </span>
             </>
@@ -133,8 +129,8 @@ export default function TopBar({
                     setAppsOpen(false);
                   }}
                 >
-                  <span className="app-tile__icon" style={{ background: app.bg }} aria-hidden="true">
-                    <app.Icon size={20} className="app-tile__icon-mark" />
+                  <span className="app-tile__icon" aria-hidden="true">
+                    <img src={app.img} alt="" className="app-tile__icon-img" />
                   </span>
                   <span className="app-tile__label">{app.label}</span>
                 </button>

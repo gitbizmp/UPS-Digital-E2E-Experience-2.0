@@ -1,21 +1,15 @@
-import { useState } from "react";
 import {
   ChevronDown,
   ChevronRight,
   OrdersIcon,
-  ShipmentsIcon,
   ClaimsIcon,
   ShieldCheckIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
   CallMadeIcon,
   CheckCircleIcon,
   WarningTriangleIcon,
   PackageIcon,
+  PaymentIcon,
   AssignmentIcon,
-  LightbulbIcon,
-  ArrowRightAltIcon,
-  OpenInNewIcon,
 } from "./icons";
 import shopifyImg from "../assets/solutions/shopify.svg";
 import happyReturnsImg from "../assets/solutions/happy-returns.svg";
@@ -30,58 +24,42 @@ import "./OperateDashboard.css";
    ============================================================================ */
 
 /* ------------------------------- Summary cards ------------------------------ */
-type Trend = "up" | "down";
 type SummaryCard = {
   key: "orders" | "shipments" | "claims";
   label: string;
   icon: React.ReactNode;
   value: string;
-  unit?: string;
-  delta: string;
-  trend: Trend;
-  breakdown: { value: string; label: string }[];
+  sub: string;
 };
 
 const summaries: SummaryCard[] = [
   {
-    key: "orders",
-    label: "Orders",
-    icon: <OrdersIcon size={20} />,
-    value: "2,458",
-    delta: "12.5%",
-    trend: "up",
-    breakdown: [
-      { value: "312", label: "New" },
-      { value: "148", label: "Processing" },
-      { value: "1,998", label: "Fulfilled" },
-    ],
-  },
-  {
     key: "shipments",
-    label: "Shipments",
-    icon: <ShipmentsIcon size={20} />,
-    value: "2,000",
-    delta: "8.2%",
-    trend: "up",
-    breakdown: [
-      { value: "300", label: "In transit" },
-      { value: "1,400", label: "Delivered" },
-      { value: "200", label: "Exceptions" },
-    ],
+    label: "Total shipments insured",
+    icon: <ShieldCheckIcon size={20} />,
+    value: "0",
+    sub: "Shopify order sync active",
   },
   {
     key: "claims",
-    label: "Claims",
+    label: "Active claims",
     icon: <ClaimsIcon size={20} />,
-    value: "6",
-    unit: "open",
-    delta: "3.1%",
-    trend: "down",
-    breakdown: [
-      { value: "312", label: "Approved" },
-      { value: "$9,786", label: "Paid out" },
-      { value: "2", label: "Pending" },
-    ],
+    value: "1",
+    sub: "Claims filed via portal",
+  },
+  {
+    key: "claims",
+    label: "Claims approved",
+    icon: <CheckCircleIcon size={20} />,
+    value: "1",
+    sub: "Payout rate 100%",
+  },
+  {
+    key: "orders",
+    label: "Total coverage",
+    icon: <PaymentIcon size={20} />,
+    value: "$150.00",
+    sub: "Insurance policy limits",
   },
 ];
 
@@ -89,141 +67,80 @@ function SummaryCards() {
   return (
     <section className="opd-summary">
       {summaries.map((c) => (
-        <article className={`opd-sum opd-sum--${c.key}`} key={c.key}>
+        <article className={`opd-sum opd-sum--${c.key}`} key={c.label}>
           <div className="opd-sum__top">
-            <span className="opd-sum__chip">
-              <span className="opd-sum__icon">{c.icon}</span>
-              {c.label}
-            </span>
-            <span className={`opd-delta opd-delta--${c.trend}`}>
-              {c.trend === "up" ? (
-                <TrendingUpIcon size={14} />
-              ) : (
-                <TrendingDownIcon size={14} />
-              )}
-              {c.delta}
-            </span>
+            <span className="opd-sum__label">{c.label}</span>
+            <span className="opd-sum__icon">{c.icon}</span>
           </div>
 
-          <p className="opd-sum__value">
-            {c.value} {c.unit && <small>{c.unit}</small>}
-          </p>
+          <p className="opd-sum__value">{c.value}</p>
 
-          <div className="opd-sum__breakdown">
-            {c.breakdown.map((b) => (
-              <div key={b.label}>
-                <p className="opd-sum__cell-value">{b.value}</p>
-                <p className="opd-sum__cell-label">{b.label}</p>
-              </div>
-            ))}
-          </div>
+          <p className="opd-sum__sub">{c.sub}</p>
         </article>
       ))}
     </section>
   );
 }
 
-/* --------------------------------- Area chart -------------------------------- */
-type SeriesKey = "orders" | "shipments" | "claims";
+/* --------------------------------- Shipment volume chart -------------------------------- */
+const volMonths = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
+const volValues = [1500, 1700, 1600, 1850, 1900, 2000];
+const volTicks = [2000, 1500, 1000, 500, 0];
+const VOL_PAD = 0.04;
+const VOL_W = 700;
+const VOL_H = 220;
 
-const chartMonths = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
+function ShipmentVolumeChart() {
+  const max = volTicks[0];
+  const n = volValues.length;
 
-const series: Record<
-  SeriesKey,
-  { label: string; color: string; values: number[]; ticks: number[] }
-> = {
-  orders: {
-    label: "Orders placed",
-    color: "var(--ups-blue)",
-    values: [1800, 2100, 1950, 2300, 2200, 2458],
-    ticks: [2500, 1875, 1250, 625, 0],
-  },
-  shipments: {
-    label: "Shipments created",
-    color: "var(--teal)",
-    values: [1500, 1700, 1600, 1850, 1900, 2000],
-    ticks: [2000, 1500, 1000, 500, 0],
-  },
-  claims: {
-    label: "Claims filed",
-    color: "var(--gold-500)",
-    values: [8, 5, 7, 4, 6, 6],
-    ticks: [8, 6, 4, 2, 0],
-  },
-};
-
-const PAD = 0.04;
-const CH_W = 700;
-const CH_H = 220;
-
-function ActivityChart() {
-  const [tab, setTab] = useState<SeriesKey>("shipments");
-  const s = series[tab];
-  const max = s.ticks[0];
-  const n = s.values.length;
-
-  const pts = s.values.map((v, i) => {
-    const xPct = PAD + (i / (n - 1)) * (1 - 2 * PAD);
+  const pts = volValues.map((v, i) => {
+    const xPct = VOL_PAD + (i / (n - 1)) * (1 - 2 * VOL_PAD);
     const yPct = 1 - v / max;
-    return { xPct, yPct, x: xPct * CH_W, y: yPct * CH_H };
+    return { xPct, yPct, x: xPct * VOL_W, y: yPct * VOL_H };
   });
 
   const line = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-  const area = `${pts[0].x.toFixed(1)},${CH_H} ${line} ${pts[n - 1].x.toFixed(
-    1,
-  )},${CH_H}`;
+  const area = `${pts[0].x.toFixed(1)},${VOL_H} ${line} ${pts[n - 1].x.toFixed(1)},${VOL_H}`;
 
   return (
     <div className="opd-panel">
       <div className="opd-panel__head">
         <div>
-          <h3 className="opd-panel__title">Activity overview</h3>
-          <p className="opd-panel__subtitle">Last 6 months · {s.label}</p>
-        </div>
-        <div className="opd-seg" role="tablist" aria-label="Activity metric">
-          {(Object.keys(series) as SeriesKey[]).map((k) => (
-            <button
-              key={k}
-              role="tab"
-              aria-selected={tab === k}
-              className={`opd-seg__btn${tab === k ? " opd-seg__btn--active" : ""}`}
-              onClick={() => setTab(k)}
-            >
-              {k[0].toUpperCase() + k.slice(1)}
-            </button>
-          ))}
+          <h3 className="opd-panel__title">Shipment volume</h3>
+          <p className="opd-panel__subtitle">Shipments created · Last 6 months</p>
         </div>
       </div>
 
       <div className="opd-chart">
         <div className="opd-chart__yaxis">
-          {s.ticks.map((t) => (
+          {volTicks.map((t) => (
             <span key={t}>{t >= 1000 ? `${(t / 1000).toFixed(1)}k` : t}</span>
           ))}
         </div>
         <div className="opd-chart__plot">
           <div className="opd-chart__grid">
-            {s.ticks.map((t) => (
+            {volTicks.map((t) => (
               <span key={t} />
             ))}
           </div>
           <svg
             className="opd-chart__svg"
-            viewBox={`0 0 ${CH_W} ${CH_H}`}
+            viewBox={`0 0 ${VOL_W} ${VOL_H}`}
             preserveAspectRatio="none"
             aria-hidden
           >
             <defs>
-              <linearGradient id={`opd-fill-${tab}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={s.color} stopOpacity="0.22" />
-                <stop offset="100%" stopColor={s.color} stopOpacity="0" />
+              <linearGradient id="opd-vol-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--teal)" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="var(--teal)" stopOpacity="0" />
               </linearGradient>
             </defs>
-            <polygon points={area} fill={`url(#opd-fill-${tab})`} />
+            <polygon points={area} fill="url(#opd-vol-fill)" />
             <polyline
               points={line}
               fill="none"
-              stroke={s.color}
+              stroke="var(--teal)"
               strokeWidth={2.5}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -237,18 +154,129 @@ function ActivityChart() {
               style={{
                 left: `${p.xPct * 100}%`,
                 top: `${p.yPct * 100}%`,
-                border: `2.5px solid ${s.color}`,
+                border: "2.5px solid var(--teal)",
               }}
             />
           ))}
         </div>
       </div>
       <div className="opd-chart__xaxis">
-        {chartMonths.map((m) => (
+        {volMonths.map((m) => (
           <span key={m}>{m}</span>
         ))}
       </div>
     </div>
+  );
+}
+
+/* --------------------------------- Breakdown donuts -------------------------------- */
+type Segment = { label: string; value: number; display: string; color: string };
+type BreakdownGroup = {
+  key: "orders" | "shipments" | "claims";
+  title: string;
+  total: string;
+  totalLabel: string;
+  segments: Segment[];
+};
+
+const breakdowns: BreakdownGroup[] = [
+  {
+    key: "orders",
+    title: "Orders",
+    total: "2,458",
+    totalLabel: "Total",
+    segments: [
+      { label: "New", value: 312, display: "312", color: "#1e40af" },
+      { label: "Processing", value: 148, display: "148", color: "#3b82f6" },
+      { label: "Fulfilled", value: 1998, display: "1,998", color: "#93c5fd" },
+    ],
+  },
+  {
+    key: "shipments",
+    title: "Shipments",
+    total: "2,000",
+    totalLabel: "Total",
+    segments: [
+      { label: "In transit", value: 300, display: "300", color: "#0f766e" },
+      { label: "Delivered", value: 1400, display: "1,400", color: "#14b8a6" },
+      { label: "Exceptions", value: 200, display: "200", color: "#5eead4" },
+    ],
+  },
+];
+
+const DONUT = 100;
+const R = 42;
+const C = 2 * Math.PI * R;
+
+function Donut({ segments }: { segments: Segment[] }) {
+  const total = segments.reduce((sum, s) => sum + s.value, 0);
+  let offset = 0;
+  return (
+    <svg
+      className="opd-donut__svg"
+      viewBox={`0 0 ${DONUT} ${DONUT}`}
+      aria-hidden
+    >
+      <circle
+        cx={DONUT / 2}
+        cy={DONUT / 2}
+        r={R}
+        fill="none"
+        stroke="var(--gray-100)"
+        strokeWidth={12}
+      />
+      {segments.map((s) => {
+        const frac = total ? s.value / total : 0;
+        const dash = frac * C;
+        const el = (
+          <circle
+            key={s.label}
+            cx={DONUT / 2}
+            cy={DONUT / 2}
+            r={R}
+            fill="none"
+            stroke={s.color}
+            strokeWidth={12}
+            strokeDasharray={`${dash} ${C - dash}`}
+            strokeDashoffset={-offset}
+            transform={`rotate(-90 ${DONUT / 2} ${DONUT / 2})`}
+          />
+        );
+        offset += dash;
+        return el;
+      })}
+    </svg>
+  );
+}
+
+function BreakdownCharts() {
+  return (
+    <section className="opd-breakdowns">
+      {breakdowns.map((g) => (
+        <div className="opd-panel opd-donut" key={g.key}>
+          <h3 className="opd-panel__title">{g.title}</h3>
+          <div className="opd-donut__chart">
+            <Donut segments={g.segments} />
+            <div className="opd-donut__center">
+              <span className="opd-donut__total">{g.total}</span>
+              <span className="opd-donut__total-label">{g.totalLabel}</span>
+            </div>
+          </div>
+          <ul className="opd-donut__legend">
+            {g.segments.map((s) => (
+              <li className="opd-donut__row" key={s.label}>
+                <span
+                  className="opd-donut__dot"
+                  style={{ background: s.color }}
+                />
+                <span className="opd-donut__leg-label">{s.label}</span>
+                <span className="opd-donut__leg-value">{s.display}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
   );
 }
 
@@ -331,130 +359,94 @@ function RecentActivity() {
   );
 }
 
-/* ---------------------------------- To-Do ----------------------------------- */
-type Todo = {
-  icon: React.ReactNode;
-  tone: "urgent" | "info" | "warn";
-  label: string;
-  meta: string;
-};
-
-const todos: Todo[] = [
-  {
-    icon: <ClaimsIcon size={16} />,
-    tone: "urgent",
-    label: "Approve 2 pending claims",
-    meta: "$1,240 total value",
-  },
-  {
-    icon: <WarningTriangleIcon size={16} />,
-    tone: "warn",
-    label: "Review 3 shipment exceptions",
-    meta: "Delivery at risk",
-  },
-  {
-    icon: <ShieldCheckIcon size={16} />,
-    tone: "info",
-    label: "Complete insurance preferences",
-    meta: "Unlock full coverage",
-  },
+/* ------------------------------- Claims overview ------------------------------ */
+type ClaimStat = { label: string; value: number; display: string; color: string };
+const claimStats: ClaimStat[] = [
+  { label: "Approved", value: 312, display: "312", color: "#16a34a" },
+  { label: "Open", value: 6, display: "6", color: "#2563eb" },
+  { label: "Pending", value: 2, display: "2", color: "#f59e0b" },
+  { label: "Denied", value: 1, display: "1", color: "#dc2626" },
 ];
 
-function TodoCard() {
+const draftsCount = 3;
+
+function ClaimsOverview({ onOpenDrafts }: { onOpenDrafts?: () => void }) {
+  const total = claimStats.reduce((s, c) => s + c.value, 0);
+  const max = Math.max(...claimStats.map((c) => c.value));
   return (
-    <div className="opd-todo">
-      <div className="opd-todo__head">
-        <AssignmentIcon size={18} />
-        <span className="opd-todo__title">To-Do</span>
-        <span className="opd-todo__count">{todos.length}</span>
+    <div className="opd-panel">
+      <div className="opd-panel__head">
+        <h3 className="opd-panel__title">Claims overview</h3>
+        <span className="opd-claims__count">{total} total</span>
       </div>
-      <ul className="opd-todo__list">
-        {todos.map((t) => (
-          <li key={t.label}>
-            <button className="opd-todo__item">
-              <span className={`opd-todo__mark opd-todo__mark--${t.tone}`}>{t.icon}</span>
-              <span className="opd-todo__text">
-                <span className="opd-todo__label">{t.label}</span>
-                <span className="opd-todo__meta">{t.meta}</span>
-              </span>
-              <ChevronRight size={18} className="opd-todo__chev" />
-            </button>
+      <ul className="opd-claims__list">
+        {claimStats.map((c) => (
+          <li className="opd-claims__row" key={c.label}>
+            <div className="opd-claims__top">
+              <span className="opd-claims__label">{c.label}</span>
+              <span className="opd-claims__value">{c.display}</span>
+            </div>
+            <div className="opd-claims__track">
+              <div
+                className="opd-claims__fill"
+                style={{
+                  width: `${max ? (c.value / max) * 100 : 0}%`,
+                  background: c.color,
+                }}
+              />
+            </div>
           </li>
         ))}
       </ul>
-      <div className="opd-todo__foot">
-        <button className="opd-todo__all">View all tasks</button>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------- Need a boost ------------------------------- */
-const boostLinks = [
-  { label: "Policy recap", external: false },
-  { label: "Claims FAQs", external: false },
-  { label: "Insurance glossary", external: true },
-];
-
-function BoostCard() {
-  return (
-    <div className="opd-boost">
-      <div className="opd-boost__head">
-        <LightbulbIcon size={18} />
-        Need a boost?
-      </div>
-      <ul className="opd-boost__list">
-        {boostLinks.map((l) => (
-          <li key={l.label}>
-            <button className="opd-boost__item">
-              {l.label}
-              {l.external ? <OpenInNewIcon size={16} /> : <ArrowRightAltIcon size={16} />}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/* ------------------------------- Policy banner ------------------------------ */
-function PolicyBanner() {
-  return (
-    <section className="opd-policy">
-      <div className="opd-policy__main">
-        <span className="opd-policy__badge">
-          <ShieldCheckIcon size={28} />
+      <button className="opd-claims__drafts" onClick={onOpenDrafts}>
+        <span className="opd-claims__drafts-label">
+          <AssignmentIcon size={16} />
+          Drafts
+          <span className="opd-claims__drafts-count">{draftsCount}</span>
         </span>
-        <div>
-          <p className="opd-policy__label">Insurance policy</p>
-          <p className="opd-policy__name">
-            InsureShield Connect
-            <span className="opd-policy__status">
-              <span className="opd-policy__dot" />
-              Active
-            </span>
-          </p>
-          <p className="opd-policy__num">Policy #1234-567890</p>
+        <ChevronRight size={16} />
+      </button>
+    </div>
+  );
+}
+
+/* ------------------------------- Policy card ------------------------------ */
+function PolicyCard() {
+  return (
+    <div className="opd-polcard">
+      <div className="opd-polcard__head">
+        <ShieldCheckIcon size={18} className="opd-polcard__icon" />
+        <span className="opd-polcard__title">Insurance policy</span>
+      </div>
+      <p className="opd-polcard__name">
+        InsureShield Connect
+        <span className="opd-polcard__status">
+          <span className="opd-polcard__dot" />
+          Active
+        </span>
+      </p>
+      <p className="opd-polcard__num">Policy #1234-567890</p>
+      <div className="opd-polcard__facts">
+        <div className="opd-polcard__fact">
+          <span className="opd-polcard__fact-label">Coverage limit</span>
+          <span className="opd-polcard__fact-value">$50,000</span>
+        </div>
+        <div className="opd-polcard__fact">
+          <span className="opd-polcard__fact-label">Renews</span>
+          <span className="opd-polcard__fact-value">Jan 1, 2027</span>
         </div>
       </div>
-
-      <div className="opd-policy__facts">
-        <div>
-          <p className="opd-policy__fact-label">Coverage limit</p>
-          <p className="opd-policy__fact-value">$50,000</p>
-        </div>
-        <span className="opd-policy__divider" />
-        <div>
-          <p className="opd-policy__fact-label">Renews</p>
-          <p className="opd-policy__fact-value">Jan 1, 2027</p>
-        </div>
-        <span className="opd-policy__divider" />
-        <button className="opd-policy__cta">
+      <div className="opd-polcard__actions">
+        <button className="opd-polcard__cta opd-polcard__cta--primary">
+          <ClaimsIcon size={16} />
+          File a claim
+        </button>
+        <button className="opd-polcard__cta">
           Manage policy
           <ChevronRight size={16} />
         </button>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -524,17 +516,13 @@ function ExploreSolutions() {
 }
 
 /* ---------------------------------- Page ------------------------------------ */
-export default function Dashboard() {
+export default function Dashboard({ onOpenDrafts }: { onOpenDrafts?: () => void }) {
   return (
     <main className="opd">
       <div className="opd__inner">
         <header className="opd-head">
           <div>
-            <p className="opd-head__eyebrow">Operate</p>
-            <h1 className="opd-head__title">Welcome back, Alex</h1>
-            <p className="opd-head__subtitle">
-              Here’s what’s happening across your orders, shipments, and claims today.
-            </p>
+            <h1 className="opd-head__title">Welcome, Alex</h1>
           </div>
           <div className="opd-head__actions">
             <button className="opd-range">
@@ -548,18 +536,17 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <PolicyBanner />
-
         <SummaryCards />
 
         <div className="opd-layout">
           <div className="opd-col">
-            <ActivityChart />
-            <RecentActivity />
+            <ShipmentVolumeChart />
+            <ClaimsOverview onOpenDrafts={onOpenDrafts} />
+            <BreakdownCharts />
           </div>
           <aside className="opd-rail">
-            <TodoCard />
-            <BoostCard />
+            <PolicyCard />
+            <RecentActivity />
           </aside>
         </div>
 

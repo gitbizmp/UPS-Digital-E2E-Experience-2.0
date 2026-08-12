@@ -8,9 +8,10 @@ import Shipments from "./Shipments";
 import Resolutions from "./Resolutions";
 import Profile from "./Profile";
 import LynkUpHub from "./LynkUpHub";
+import Dashboard from "./Dashboard";
 import { paymentMethods, type CapKey } from "../data/postPurchase";
 
-type LynView = "home" | "landing" | "commerceshield" | CapKey;
+type LynView = "home" | "landing" | "commerceshield" | "insureshield" | CapKey;
 
 export default function Portal() {
   const [view, setView] = useState<View>("orders");
@@ -27,9 +28,19 @@ export default function Portal() {
   const [lynkupView, setLynkupView] = useState<LynView>("home");
   const [lynkupNav, setLynkupNav] = useState(0);
   const [commerceShieldConfigured, setCommerceShieldConfigured] = useState(false);
+  const [insureShieldPurchased, setInsureShieldPurchased] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [claimsScope, setClaimsScope] = useState<"filed" | "drafts">("filed");
+  const [claimsScopeToken, setClaimsScopeToken] = useState(0);
 
-  const appLabel = apps.find((a) => a.key === app)?.label ?? "Commerce Hub";
+  const openClaimsDrafts = () => {
+    setClaimsScope("drafts");
+    setClaimsScopeToken((t) => t + 1);
+    setApp("store-ops");
+    setView("claims");
+  };
+
+  const appLabel = apps.find((a) => a.key === app)?.label ?? "UPS Digital Solutions";
 
   const openLynkUpConfig = () => {
     setLynkupView("landing");
@@ -52,6 +63,13 @@ export default function Portal() {
     setView("orders");
   };
 
+  const configureInsureShieldInLynkUp = () => {
+    setLynkupView("insureshield");
+    setLynkupNav((n) => n + 1);
+    setApp("lynkup");
+    setView("orders");
+  };
+
   const safeView: View =
     !postPurchasePurchased && (view === "tracking" || view === "resolutions")
       ? "orders"
@@ -64,7 +82,7 @@ export default function Portal() {
         activeApp={app}
         onAppChange={(next) => {
           setApp(next);
-          setView("orders");
+          setView(next === "store-ops" ? "dashboard" : "orders");
         }}
         onProfile={() => {
           setApp("store-ops");
@@ -78,9 +96,15 @@ export default function Portal() {
         onStoreOpsEnabled={() => setPostPurchasePurchased(true)}
         onDeactivate={() => setPostPurchasePurchased(false)}
         onCommerceShieldConfigured={(active) => setCommerceShieldConfigured(active)}
+        onInsureShieldActivated={() => setInsureShieldPurchased(true)}
+        insureShieldPurchased={insureShieldPurchased}
         onGoToStoreOpsOrders={() => {
           setApp("store-ops");
           setView("orders");
+        }}
+        onGoToStoreOpsHome={() => {
+          setApp("store-ops");
+          setView("dashboard");
         }}
         postPurchaseActive={postPurchasePurchased}
         subs={ppSubs}
@@ -104,7 +128,7 @@ export default function Portal() {
         hideSuite={safeView === "profile"}
         onAppChange={(next) => {
           setApp(next);
-          setView("orders");
+          setView(next === "store-ops" ? "dashboard" : "orders");
           if (next === "lynkup") {
             setLynkupView("home");
             setLynkupNav((n) => n + 1);
@@ -130,6 +154,8 @@ export default function Portal() {
           </main>
         ) : safeView === "orders" ? (
           <Orders commerceShieldActive={commerceShieldConfigured} />
+        ) : safeView === "dashboard" ? (
+          <Dashboard onOpenDrafts={openClaimsDrafts} />
         ) : safeView === "tracking" ? (
           <TrackingPages />
         ) : safeView === "shipments" ? (
@@ -141,15 +167,21 @@ export default function Portal() {
             postPurchasePurchased={postPurchasePurchased}
             postPurchaseSubs={ppSubs}
             commerceShieldPurchased={commerceShieldConfigured}
+            insureShieldPurchased={insureShieldPurchased}
             onConfigureInLynkUp={openLynkUpConfig}
             onConfigureCommerceShieldInLynkUp={configureCommerceShieldInLynkUp}
+            onConfigureInsureShieldInLynkUp={configureInsureShieldInLynkUp}
             onConfigureCapability={configureCapabilityInLynkUp}
             onCancelAddon={(k) => setPpSubs((s) => ({ ...s, [k]: false }))}
             onCancelCommerceShield={() => setCommerceShieldConfigured(false)}
             onBack={() => setView("orders")}
           />
         ) : (
-          <Claims onUnreadCountChange={setClaimsUnreadCount} />
+          <Claims
+            onUnreadCountChange={setClaimsUnreadCount}
+            initialScope={claimsScope}
+            scopeToken={claimsScopeToken}
+          />
         )}
       </div>
       </div>

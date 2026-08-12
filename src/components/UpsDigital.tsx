@@ -84,6 +84,11 @@ function NavDropdown({
   href: string;
   columns: { group: string; items: string[] }[];
 }) {
+  const navigate = useNavigate();
+  const routeFor: Record<string, string> = {
+    CommerceShield: "/commerceshield",
+    "InsureShield Shipping Insurance": "/insureshield",
+  };
   return (
     <div className="isd-nav__item">
       <a href={href} className="isd-nav__trigger">
@@ -111,11 +116,25 @@ function NavDropdown({
             <div className="isd-nav__col" key={col.group}>
               <p className="isd-nav__col-label">{col.group}</p>
               <ul>
-                {col.items.map((item) => (
-                  <li key={item}>
-                    <a href={href}>{item}</a>
-                  </li>
-                ))}
+                {col.items.map((item) =>
+                  routeFor[item] ? (
+                    <li key={item}>
+                      <a
+                        href={routeFor[item]}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(routeFor[item]);
+                        }}
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={item}>
+                      <a href={href}>{item}</a>
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           ))}
@@ -214,7 +233,7 @@ function Hero() {
         </p>
         <div className="isd-hero__ctas">
           <button className="isd-btn isd-btn--white" onClick={() => navigate("/login", { state: { newAccount: true } })}>
-            Get Started in CommerceHub
+            UPS Digital Solutions Portal
             <Chevron />
           </button>
           <button className="isd-btn isd-btn--ghost isd-btn--hero-white">
@@ -303,6 +322,7 @@ const routerCards = [
     title: "Loss Prevention",
     value: "Spot high-risk orders before you ship, so you can head off avoidable loss.",
     cta: "Explore prevention",
+    route: "/commerceshield",
     image: predictImg,
   },
   {
@@ -329,6 +349,7 @@ const routerCards = [
 
 function RouterSection() {
   const [active, setActive] = useState<string>("protect");
+  const navigate = useNavigate();
 
   return (
     <section className="isd-router" id="coverage">
@@ -362,7 +383,10 @@ function RouterSection() {
                   <button
                     className="isd-card__cta"
                     style={{ color: c.anchor ? "#3FA29D" : "#101828" }}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (c.route) navigate(c.route);
+                    }}
                   >
                     {c.cta}
                   </button>
@@ -455,7 +479,7 @@ function FuturesSection() {
         </p>
         <div className="isd-futures__grid">
           <div className="isd-futures__col isd-futures__col--bad">
-            <span className="isd-futures__tag">Without CommerceHub</span>
+            <span className="isd-futures__tag">Without UPS Digital Solutions</span>
             <h3>Disconnected tools. Disconnected experiences.</h3>
             <ul>
               {withoutList.map((t) => (
@@ -468,7 +492,7 @@ function FuturesSection() {
             </p>
           </div>
           <div className="isd-futures__col isd-futures__col--good">
-            <span className="isd-futures__tag">With CommerceHub</span>
+            <span className="isd-futures__tag">With UPS Digital Solutions</span>
             <h3>One suite. One connected experience.</h3>
             <ul>
               {withList.map((t) => (
@@ -784,7 +808,7 @@ const productGroups = [
       {
         name: "Analytics & Orchestration",
         desc: "Manage orders, shipments, claims, billing, and store operations in one unified portal.",
-        cta: "Get Started in CommerceHub",
+        cta: "Get Started in UPS Digital Solutions",
       },
     ],
   },
@@ -811,6 +835,7 @@ function ProductsSection() {
                   key={it.name}
                   onClick={() => {
                     if (it.name.includes("Shipping Insurance")) navigate("/insureshield");
+                    else if (it.name === "CommerceShield") navigate("/commerceshield");
                   }}
                 >
                   <h4>{it.name}</h4>

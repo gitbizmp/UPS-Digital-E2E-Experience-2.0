@@ -6,10 +6,12 @@ import {
   ShieldIcon,
   HelpIcon,
   ChevronDown,
+  DashboardIcon,
 } from "./icons";
 import "./Sidebar.css";
 
 export type View =
+  | "dashboard"
   | "orders"
   | "tracking"
   | "claims"
@@ -75,6 +77,15 @@ export default function Sidebar({
       <div className="sidebar__inner">
         {showNav && (
           <nav className="sidebar__middle">
+          <div className="sidebar__section">
+            <MenuLink
+              label="Home"
+              icon={<DashboardIcon size={16} />}
+              active={view === "dashboard"}
+              onClick={() => onNavigate("dashboard")}
+            />
+          </div>
+
           <div className="sidebar__section">
             <p className="sidebar__section-title">Pre-fulfillment</p>
             {fulfillment.map((item) => (

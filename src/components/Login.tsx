@@ -31,11 +31,11 @@ export default function Login() {
           <div className="login__brand">
             <img src={upsLogo} alt="UPS" className="login__brand-logo" />
             <span className="login__brand-divider">|</span>
-            <span className="login__brand-name">CommerceHub</span>
+            <span className="login__brand-name">UPS Digital Solutions</span>
           </div>
           <p className="login__powered">Powered by UPS Digital</p>
           <h1 className="login__title">Create your password</h1>
-          <p className="login__sub">Welcome! Set a password to finish activating your InsureShield&reg; Connect account.</p>
+          <p className="login__sub">Welcome! Set a password to finish creating your UPS Digital Solutions account.</p>
 
           <div className="login__field">
             <label htmlFor="login-email">Email</label>

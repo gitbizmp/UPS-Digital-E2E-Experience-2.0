@@ -980,11 +980,20 @@ function ClaimDetail({
 /* --------------------------------- Claims page --------------------------------- */
 export default function Claims({
   onUnreadCountChange,
+  initialScope = "filed",
+  scopeToken,
 }: {
   onUnreadCountChange?: (count: number) => void;
+  initialScope?: ClaimScope;
+  scopeToken?: number;
 }) {
-  const [scope, setScope] = useState<ClaimScope>("filed");
+  const [scope, setScope] = useState<ClaimScope>(initialScope);
   const [draftClaim, setDraftClaim] = useState<Claim | null>(null);
+
+  useEffect(() => {
+    if (scopeToken !== undefined) setScope(initialScope);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scopeToken]);
   const [unreadByClaim, setUnreadByClaim] = useState<Record<string, ClaimMessageMeta>>(
     initialClaimMessages,
   );

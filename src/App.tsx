@@ -5,6 +5,7 @@ import Questionnaire from "./components/Questionnaire";
 import Login from "./components/Login";
 import Portal from "./components/Portal";
 import InsureShield from "./components/InsureShield";
+import CommerceShield from "./components/CommerceShield";
 import AccessGate from "./components/AccessGate";
 import "./App.css";
 import "./components/Flow.css";
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/search" element={<GoogleResults />} />
         <Route path="/ups-digital" element={<UpsDigital />} />
         <Route path="/insureshield" element={<InsureShield />} />
+        <Route path="/commerceshield" element={<CommerceShield />} />
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/login" element={<Login />} />
           <Route path="/portal" element={<Portal />} />
