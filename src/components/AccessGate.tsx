@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import upsLogo from "../assets/logos/ups-logo.png";
 import "./AccessGate.css";
 
 const ACCESS_CODE = "Happy-Honey";
@@ -26,25 +27,7 @@ export default function AccessGate({ children }: { children: ReactNode }) {
   return (
     <div className="gate">
       <form className="gate__card" onSubmit={handleSubmit}>
-        <div className="gate__lock" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-            <rect
-              x="4"
-              y="10"
-              width="16"
-              height="11"
-              rx="2.5"
-              stroke="currentColor"
-              strokeWidth="1.8"
-            />
-            <path
-              d="M8 10V7a4 4 0 018 0v3"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
+        <img className="gate__logo" src={upsLogo} alt="UPS" />
         <h1 className="gate__title">Enter the experience</h1>
         <p className="gate__sub">This preview is protected. Enter the access code to continue.</p>
         <input

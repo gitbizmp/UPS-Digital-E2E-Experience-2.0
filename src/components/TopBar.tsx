@@ -6,7 +6,7 @@ import {
 } from "./icons";
 import upsLogo from "../assets/logos/ups-logo.png";
 import operateImg from "../assets/apps/Operate.png";
-import integrateImg from "../assets/apps/Integrate.png";
+import integrateImg from "../assets/apps/integrate.png";
 import controlImg from "../assets/apps/Control.png";
 import developImg from "../assets/apps/Develop.png";
 import "./TopBar.css";

@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="276" height="276" viewBox="0 0 276 276" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Control">
+<path id="Vector" d="M138 237.188C192.78 237.188 237.188 192.78 237.188 138C237.188 83.2203 192.78 38.8125 138 38.8125C83.2203 38.8125 38.8125 83.2203 38.8125 138C38.8125 192.78 83.2203 237.188 138 237.188Z" stroke="#FFD84C" stroke-width="24"/>
+<path id="Vector_2" d="M138 171C156.225 171 171 156.225 171 138C171 119.775 156.225 105 138 105C119.775 105 105 119.775 105 138C105 156.225 119.775 171 138 171Z" fill="#351C15"/>
+<path id="Vector_3" d="M138 21.5625V56.0625" stroke="#FCC400" stroke-width="24" stroke-linecap="round"/>
+<path id="Vector_4" d="M138 219.938V254.438" stroke="#FCC400" stroke-width="24" stroke-linecap="round"/>
+<path id="Vector_5" d="M21.5625 138H56.0625" stroke="#FCC400" stroke-width="24" stroke-linecap="round"/>
+<path id="Vector_6" d="M219.938 138H254.438" stroke="#FCC400" stroke-width="24" stroke-linecap="round"/>
+</g>
+</svg>

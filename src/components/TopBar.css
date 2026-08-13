@@ -70,11 +70,8 @@
   font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
-  background-image: linear-gradient(90deg, #4a2c17 0%, #7a4a24 50%, #a86b3a 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  color: #1b2a4a;
+  -webkit-text-fill-color: #1b2a4a;
 }
 
 .topbar__right {
