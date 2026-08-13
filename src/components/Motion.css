@@ -23,12 +23,6 @@
   align-items: flex-start;
 }
 
-.motion__head-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
 .motion__title {
   margin: 0;
   font-size: 30px;
@@ -391,49 +385,6 @@
   transform: translateY(0);
 }
 
-.motion__music-btn {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid rgba(127, 127, 127, 0.28);
-  background: rgba(127, 127, 127, 0.06);
-  color: inherit;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.motion__music-btn:hover {
-  background: rgba(127, 127, 127, 0.12);
-  border-color: rgba(127, 127, 127, 0.45);
-  transform: scale(1.05);
-}
-.motion__music-btn.is-playing {
-  background: linear-gradient(120deg, #FCC400 0%, #F7A600 100%);
-  border-color: #F7A600;
-  color: #351c15;
-  box-shadow: 0 0 12px rgba(252, 196, 0, 0.3);
-}
-
-.motion__youtube-player {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.motion__youtube-player iframe {
-  border: none;
-  width: 320px;
-  height: 180px;
-}
-
 .present {
   position: fixed;
   inset: 0;
@@ -540,6 +491,35 @@
   transform: scale(1.25);
 }
 
+.present__mute-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(53, 28, 21, 0.4);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+.present__mute-btn:hover {
+  background: rgba(53, 28, 21, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+.present__mute-btn.is-unmuted {
+  border-color: #FCC400;
+  box-shadow: 0 0 16px rgba(252, 196, 0, 0.4);
+}
+
 @keyframes present-in {
   from {
     opacity: 0;
@@ -565,4 +545,23 @@
     opacity: 0;
     transform: translateY(-14px) scale(0.98);
   }
+}
+
+/* ================ YouTube Player ================ */
+.motion__youtube-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  width: 320px;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: #000;
+}
+
+.motion__youtube-player div {
+  width: 100%;
+  height: 100%;
 }

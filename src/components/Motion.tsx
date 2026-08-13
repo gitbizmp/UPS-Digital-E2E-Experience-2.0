@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, useRef, type CSSProperties } from "react";
 import "./Motion.css";
 import {
   OperateSignature,
@@ -132,7 +132,7 @@ const SLIDES: Slide[] = [
   { key: "develop", pre: "", word: "Develop", post: " what's next, without limits.", dur: "6.6s" },
 ];
 
-function Present({ onClose }: { onClose: () => void }) {
+function Present({ onClose, musicPlaying, onToggleMusic }: { onClose: () => void; musicPlaying: boolean; onToggleMusic: () => void }) {
   const total = SLIDES.length; // step === total → finale
   const [step, setStep] = useState(0);
 
@@ -154,6 +154,7 @@ function Present({ onClose }: { onClose: () => void }) {
       if (e.key === "Escape") onClose();
       else if (e.key === "ArrowRight") setStep((s) => Math.min(s + 1, total));
       else if (e.key === "ArrowLeft") setStep((s) => Math.max(s - 1, 0));
+      else if (e.key === "m" || e.key === "M") onToggleMusic();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -203,6 +204,15 @@ function Present({ onClose }: { onClose: () => void }) {
         ))}
         <span className={`present__dot${isFinale ? " is-active" : ""}`} />
       </div>
+
+      <button
+        type="button"
+        className={`present__mute-btn${musicPlaying ? " is-unmuted" : ""}`}
+        onClick={onToggleMusic}
+        title={musicPlaying ? "Mute" : "Unmute"}
+      >
+        {musicPlaying ? "🔊" : "🔇"}
+      </button>
     </div>
   );
 }
@@ -219,17 +229,43 @@ export default function Motion() {
   const [bg, setBg] = useState<"light" | "dark">("light");
   const [presenting, setPresenting] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Helper function to send postMessage to YouTube iframe
+  const controlPlayer = (command: string, value?: any) => {
+    if (!iframeRef.current) return;
+    const data = {
+      event: "command",
+      func: command,
+      args: value ? [value] : undefined,
+    };
+    iframeRef.current.contentWindow?.postMessage(JSON.stringify(data), "*");
+  };
 
   // Auto-play music when presenting starts
   useEffect(() => {
     if (presenting && !musicPlaying) {
-      const container = document.getElementById("youtube-player") as any;
-      if (container) {
-        container.style.display = "block";
-        setMusicPlaying(true);
-      }
+      setMusicPlaying(true);
+      // Use setTimeout to ensure iframe is ready
+      setTimeout(() => {
+        controlPlayer("playVideo");
+        controlPlayer("unMute");
+        controlPlayer("setVolume", 100);
+      }, 500);
     }
-  }, [presenting]);
+  }, [presenting, musicPlaying]);
+
+  // Handle muting/unmuting
+  useEffect(() => {
+    if (musicPlaying) {
+      controlPlayer("playVideo");
+      controlPlayer("unMute");
+      controlPlayer("setVolume", 100);
+    } else {
+      controlPlayer("pauseVideo");
+      controlPlayer("mute");
+    }
+  }, [musicPlaying]);
 
   const setAll = (id: string) =>
     setAnims({ operate: id, integrate: id, control: id, develop: id });
@@ -241,53 +277,35 @@ export default function Motion() {
   const allSignature = LOGOS.every((l) => anims[l.key] === "signature");
 
   const toggleMusic = () => {
-    const container = document.getElementById("youtube-player") as any;
-    if (!container) return;
-
-    if (musicPlaying) {
-      container.style.display = "none";
-      setMusicPlaying(false);
-    } else {
-      container.style.display = "block";
-      setMusicPlaying(true);
-    }
+    setMusicPlaying(!musicPlaying);
   };
 
   return (
     <div className={`motion motion--${bg}`}>
-      {presenting && <Present onClose={() => setPresenting(false)} />}
+      {presenting && <Present onClose={() => setPresenting(false)} musicPlaying={musicPlaying} onToggleMusic={toggleMusic} />}
       <header className="motion__head">
         <div>
           <h1 className="motion__title">Motion Lab</h1>
         </div>
-        <div className="motion__head-controls">
-          <button
-            type="button"
-            className={`motion__music-btn${musicPlaying ? " is-playing" : ""}`}
-            onClick={toggleMusic}
-            title="Toggle background music"
-          >
-            ♪
-          </button>
-          <button
-            type="button"
-            className="motion__present-btn"
-            onClick={() => setPresenting(true)}
-          >
-            ▶ Present
-          </button>
-        </div>
+        <button
+          type="button"
+          className="motion__present-btn"
+          onClick={() => setPresenting(true)}
+        >
+          ▶ Present
+        </button>
       </header>
 
       <div id="youtube-player" className="motion__youtube-player" style={{ display: "none" }}>
         <iframe
-          width="1"
-          height="1"
-          src="https://www.youtube.com/embed/vTI1S-lav74?start=73"
+          ref={iframeRef}
+          id="youtube-embed"
+          width="320"
+          height="180"
+          src="https://www.youtube.com/embed/vTI1S-lav74?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&start=73&enablejsapi=1&fs=0"
           frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="autoplay; encrypted-media"
           allowFullScreen
-          style={{ display: "none" }}
         ></iframe>
       </div>
 
