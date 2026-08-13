@@ -218,6 +218,7 @@ export default function Motion() {
   const [hoverOnly, setHoverOnly] = useState(false);
   const [bg, setBg] = useState<"light" | "dark">("light");
   const [presenting, setPresenting] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
 
   const setAll = (id: string) =>
     setAnims({ operate: id, integrate: id, control: id, develop: id });
@@ -228,6 +229,19 @@ export default function Motion() {
 
   const allSignature = LOGOS.every((l) => anims[l.key] === "signature");
 
+  const toggleMusic = () => {
+    const container = document.getElementById("youtube-player") as any;
+    if (!container) return;
+
+    if (musicPlaying) {
+      container.style.display = "none";
+      setMusicPlaying(false);
+    } else {
+      container.style.display = "block";
+      setMusicPlaying(true);
+    }
+  };
+
   return (
     <div className={`motion motion--${bg}`}>
       {presenting && <Present onClose={() => setPresenting(false)} />}
@@ -235,14 +249,36 @@ export default function Motion() {
         <div>
           <h1 className="motion__title">Motion Lab</h1>
         </div>
-        <button
-          type="button"
-          className="motion__present-btn"
-          onClick={() => setPresenting(true)}
-        >
-          ▶ Present
-        </button>
+        <div className="motion__head-controls">
+          <button
+            type="button"
+            className={`motion__music-btn${musicPlaying ? " is-playing" : ""}`}
+            onClick={toggleMusic}
+            title="Toggle background music"
+          >
+            ♪
+          </button>
+          <button
+            type="button"
+            className="motion__present-btn"
+            onClick={() => setPresenting(true)}
+          >
+            ▶ Present
+          </button>
+        </div>
       </header>
+
+      <div id="youtube-player" className="motion__youtube-player" style={{ display: "none" }}>
+        <iframe
+          width="1"
+          height="1"
+          src="https://www.youtube.com/embed/vTI1S-lav74?start=73"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ display: "none" }}
+        ></iframe>
+      </div>
 
       <section className="motion__controls">
         <div className="motion__control">
