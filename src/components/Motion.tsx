@@ -220,6 +220,17 @@ export default function Motion() {
   const [presenting, setPresenting] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
 
+  // Auto-play music when presenting starts
+  useEffect(() => {
+    if (presenting && !musicPlaying) {
+      const container = document.getElementById("youtube-player") as any;
+      if (container) {
+        container.style.display = "block";
+        setMusicPlaying(true);
+      }
+    }
+  }, [presenting]);
+
   const setAll = (id: string) =>
     setAnims({ operate: id, integrate: id, control: id, develop: id });
 
